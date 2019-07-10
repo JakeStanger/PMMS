@@ -14,7 +14,7 @@ def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ) -> Bluep
     :param bp_name: The blueprint name
     :param url_prefix: The URL prefix for the blueprint
     :param module_name: The module name of the **entry point** for the plugin. e.g `plugins.base`
-    :return: The blueprint
+    :return: The new blueprint
     """
 
     logger.debug('Creating blueprint \'%s\' with prefix \'%s\'' % (bp_name, url_prefix))
@@ -32,6 +32,13 @@ def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ) -> Bluep
 
 
 def get_blueprint(bp_name: str, module_name: str) -> Blueprint:
+    """
+    Gets a blueprint registered for a plugin.
+    Will throw an exception if the blueprint does not exist.
+    :param bp_name: The blueprint name
+    :param module_name: The module name of the **entry point** for the plugin, e.g. `plugins.base`
+    :return: The blueprint
+    """
     return getattr(sys.modules[module_name], '__blueprints__')[bp_name]
 
 
