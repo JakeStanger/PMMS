@@ -31,10 +31,6 @@ def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ):
     return bp
 
 
-def register_bp(bp: Blueprint):
-    server.app.register_blueprint(bp)
-
-
 def _load_modules():
     modules = settings.get_key('plugins')
     for module in modules:
