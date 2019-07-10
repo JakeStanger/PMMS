@@ -12,6 +12,10 @@ def get_key(key: str):
     return settings[key]
 
 
+def set_key(key: str, value):
+    settings[key] = value
+
+
 def check_and_create_file():
     """
     Makes sure the settings file exists.
