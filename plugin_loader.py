@@ -2,6 +2,7 @@ import logging
 import settings
 import server
 import importlib
+import database
 import sys
 from flask import Blueprint
 
@@ -40,6 +41,19 @@ def get_blueprint(bp_name: str, module_name: str) -> Blueprint:
     :return: The blueprint
     """
     return getattr(sys.modules[module_name], '__blueprints__')[bp_name]
+
+
+def add_column(table: str, column_name: str, column: database.db.Column):
+    db = server.app.extensions['sqlalchemy'].db
+
+    table = [*filter(lambda t: t.__tablename__ == table, [cls for cls in db.Model._decl_class_registry.values()
+                                                          if isinstance(cls, type) and issubclass(cls, db.Model)])][0]
+
+    setattr(table, column_name, column)
+
+
+def add_mixin():
+    pass  # TODO: Write function
 
 
 def _load_modules():

@@ -1,4 +1,5 @@
 from .routes import *
+from .tables import *
 import logging
 
 
