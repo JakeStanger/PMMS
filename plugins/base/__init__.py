@@ -1,6 +1,4 @@
-import logging
-
-logger: logging.Logger
+from .routes import *
 
 
 def init():
