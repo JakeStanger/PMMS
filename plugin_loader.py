@@ -8,7 +8,7 @@ from flask import Blueprint
 logger: logging.Logger
 
 
-def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ):
+def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ) -> Blueprint:
     """
     Creates a Flask blueprint which will automatically be registered
     :param bp_name: The blueprint name
@@ -23,12 +23,16 @@ def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ):
     if hasattr(sys.modules[module_name], '__blueprints__'):
         existing_bps = getattr(sys.modules[module_name], '__blueprints__')
     else:
-        existing_bps = []
+        existing_bps = {}
 
-    existing_bps.append(bp)
+    existing_bps[bp_name] = bp
     setattr(sys.modules[module_name], '__blueprints__', existing_bps)
 
     return bp
+
+
+def get_blueprint(bp_name: str, module_name: str) -> Blueprint:
+    return getattr(sys.modules[module_name], '__blueprints__')[bp_name]
 
 
 def _load_modules():
@@ -41,7 +45,7 @@ def _load_modules():
 
         if hasattr(sys.modules[plugin.__name__], '__blueprints__'):
             for bp in plugin.__blueprints__:
-                server.app.register_blueprint(bp)
+                server.app.register_blueprint(plugin.__blueprints__[bp])
 
 
 def __start__():
