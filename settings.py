@@ -39,7 +39,7 @@ def load_settings():
         settings = yaml.load(f.read(), Loader=yaml.FullLoader)
 
 
-def __init__():
+def __start__():
     global logger
     logger = logging.getLogger(__name__)
 

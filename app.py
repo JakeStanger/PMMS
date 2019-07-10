@@ -1,6 +1,7 @@
 import server
 import settings
 import database
+import plugin_loader
 import os
 import os.path
 import logging
@@ -22,10 +23,12 @@ if __name__ == '__main__':
 
     logger.info('Starting services')
 
-    server.__init__()
-    settings.__init__()
-    database.__init__()
+    server.__start__()
+    settings.__start__()
+    database.__start__()
+
+    plugin_loader.__start__()
 
     # These should always be the last things to init, in this order
     database.__create_all__()
-    server.__start__()
+    server.__run__()

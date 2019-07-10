@@ -10,12 +10,12 @@ def hello_world():
     return 'Hello World!'
 
 
-def __start__():
+def __run__():
     logger.debug('Starting Flask server.')
     app.run()
 
 
-def __init__():
+def __start__():
     global app
     global logger
 

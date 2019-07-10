@@ -12,7 +12,7 @@ def __create_all__():
     db.create_all()
 
 
-def __init__():
+def __start__():
     global logger
     logger = logging.getLogger(__name__)
 
