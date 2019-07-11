@@ -1,6 +1,7 @@
 import yaml
 import os.path
 import logging
+import helpers
 
 filename = 'settings.yml'
 
@@ -26,7 +27,8 @@ def check_and_create_file():
         with open(filename, 'w') as f:
             base_settings = {
                 'database': 'sqlite:///database.db',
-                'plugins': ['base']
+                'plugins': ['base'],
+                'secret_key': helpers.generate_secret_key()
             }
 
             f.write(yaml.dump(base_settings, default_flow_style=False))
