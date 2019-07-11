@@ -30,13 +30,16 @@ def load_user_from_username(username: str):
 def load_user_from_request(request):
     api_key = request.args.get('api_key') or request.headers.get('Authorization')
 
-    print(db.session.query(User).all()[0].api_key)
-
     if api_key:
         user = db.session.query(User).filter(db.and_(User.api_key == api_key, User.is_deleted == False)).first()
-        print(user)
         if user:
             return user
+
+
+@server.app.errorhandler(401)
+def unauthorized(e):
+    if request.headers.get('Accept') == 'application/json':
+        return jsonify({'message': str(e)}), 401
 
 
 @users.route('/login', methods=['POST'])
@@ -83,5 +86,4 @@ def create_user():
 @users.route('/secure')
 @login_required
 def secure():
-    print(current_user)
     return current_user.username
