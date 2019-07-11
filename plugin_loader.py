@@ -11,7 +11,8 @@ logger: logging.Logger
 
 def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ) -> Blueprint:
     """
-    Creates a Flask blueprint which will automatically be registered
+    Creates a Flask blueprint which will automatically be registered.
+
     :param bp_name: The blueprint name
     :param url_prefix: The URL prefix for the blueprint
     :param module_name: The module name of the **entry point** for the plugin. e.g `plugins.base`
@@ -36,6 +37,7 @@ def get_blueprint(bp_name: str, module_name: str) -> Blueprint:
     """
     Gets a blueprint registered for a plugin.
     Will throw an exception if the blueprint does not exist.
+
     :param bp_name: The blueprint name
     :param module_name: The module name of the **entry point** for the plugin, e.g. `plugins.base`
     :return: The blueprint
@@ -44,15 +46,22 @@ def get_blueprint(bp_name: str, module_name: str) -> Blueprint:
 
 
 def add_column(table_name: str, column: database.db.Column):
+    """
+    Adds a column to an existing table.
+    If the column exists already, nothing will happen.
+
+    This function queues a direct SQL ALTER TABLE query,
+    which will be executed once SQLAlchemy has created tables.
+
+    :param table_name: The table name
+    :param column: An SQLAlchemy column instance
+    """
+
     engine = database.db.engine
     column_name = column.compile(dialect=engine.dialect)
     column_type = column.type.compile(engine.dialect)
 
     database.__queue_create_column__('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
-
-
-def add_mixin():
-    pass  # TODO: Write function
 
 
 def _load_modules():
