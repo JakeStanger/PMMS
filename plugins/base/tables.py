@@ -20,3 +20,14 @@ class User(db.Model):
 
 plugin_loader.add_column('users', db.Column('test', db.String(64)))
 plugin_loader.add_column('users', db.Column('test2', db.String(64)))
+
+
+def get_name(self):
+    return self.username
+
+
+User.get_name = get_name
+
+user = User(username="Bob")
+
+print(user.get_name())
