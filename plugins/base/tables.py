@@ -1,8 +1,8 @@
 from database import db
-import plugin_loader
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -16,18 +16,3 @@ class User(db.Model):
 
     def __repr__(self):
         return "<%d - %s>" % (self.id, self.username)
-
-
-plugin_loader.add_column('users', db.Column('test', db.String(64)))
-plugin_loader.add_column('users', db.Column('test2', db.String(64)))
-
-
-def get_name(self):
-    return self.username
-
-
-User.get_name = get_name
-
-user = User(username="Bob")
-
-print(user.get_name())
