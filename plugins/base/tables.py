@@ -18,4 +18,5 @@ class User(db.Model):
         return "<%d - %s>" % (self.id, self.username)
 
 
-plugin_loader.add_column('users', 'test', db.Column(db.String(64)))
+plugin_loader.add_column('users', db.Column('test', db.String(64)))
+plugin_loader.add_column('users', db.Column('test2', db.String(64)))

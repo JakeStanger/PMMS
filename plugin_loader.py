@@ -43,13 +43,12 @@ def get_blueprint(bp_name: str, module_name: str) -> Blueprint:
     return getattr(sys.modules[module_name], '__blueprints__')[bp_name]
 
 
-def add_column(table: str, column_name: str, column: database.db.Column):
-    db = server.app.extensions['sqlalchemy'].db
+def add_column(table_name: str, column: database.db.Column):
+    engine = database.db.engine
+    column_name = column.compile(dialect=engine.dialect)
+    column_type = column.type.compile(engine.dialect)
 
-    table = [*filter(lambda t: t.__tablename__ == table, [cls for cls in db.Model._decl_class_registry.values()
-                                                          if isinstance(cls, type) and issubclass(cls, db.Model)])][0]
-
-    setattr(table, column_name, column)
+    database.__queue_create_column__('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
 
 
 def add_mixin():
