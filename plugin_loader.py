@@ -1,4 +1,6 @@
 import logging
+from typing import List
+
 import settings
 import server
 import importlib
@@ -62,6 +64,12 @@ def add_column(table_name: str, column: database.db.Column):
     column_type = column.type.compile(engine.dialect)
 
     database.__queue_create_column__('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
+
+
+def add_api_endpoints(model, methods: List[str], exclude_columns: list = None, include_columns: list = None):
+    database.__queue_api_endpoints__(database.APIEndpoint(model=model, methods=methods,
+                                                          include_columns=include_columns,
+                                                          exclude_columns=exclude_columns))
 
 
 def _load_modules():
