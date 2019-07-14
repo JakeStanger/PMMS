@@ -50,11 +50,13 @@ def __create_all__():
     for query in _column_queue:
         try:
             db.engine.execute(query)
+            logger.debug('Added column using query \'%s\'' % query)
         except (OperationalError, SQLAlchemyOperationalError):
             pass
 
     # Create API endpoints
     for endpoint in _api_endpoints_queue:
+        logger.debug('Creating API endpoints for \'%s\'' % endpoint.model.__tablename__)
         api_manager.create_api(endpoint.model, methods=endpoint.methods,
                                include_columns=endpoint.include_columns,
                                exclude_columns=endpoint.exclude_columns)
