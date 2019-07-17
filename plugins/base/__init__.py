@@ -1,7 +1,7 @@
 from .routes import *
 from .tables import *
-# from .schema import *
 from .scanners.music import *
+from .scanners.movies import *
 import logging
 
 logger: logging.Logger
