@@ -1,6 +1,6 @@
 flask
 flask_sqlalchemy
 flask-login
-flask-rest-jsonapi
+flask-restless-continued
 pyyaml
 mutagen
