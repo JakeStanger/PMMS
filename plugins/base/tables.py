@@ -1,3 +1,4 @@
+import settings
 from database import db
 from flask_login import UserMixin
 import plugin_loader
@@ -52,14 +53,13 @@ class Album(db.Model):
     name_sort = db.Column(db.Text)
 
     artist_key = db.Column(db.Integer, db.ForeignKey('artists.id'))
-    artist_name = db.Column(db.Text)
 
     release_date = db.Column(db.Date)
 
     track_count = db.Column(db.SmallInteger)
 
     artist = db.relationship('Artist', back_populates='albums')
-    tracks: list = db.relationship('Track', back_populates='album')
+    tracks: list = db.relationship('Track', back_populates='album', lazy='dynamic')
     genres = db.relationship('Genre', secondary=album_genre, back_populates='albums')
 
     def __repr__(self):
@@ -92,17 +92,16 @@ class Track(db.Model):
     name_sort = db.Column(db.Text)
 
     artist_key = db.Column(db.Integer, db.ForeignKey('artists.id'))
-    artist_name = db.Column(db.Text)
 
     album_key = db.Column(db.Integer, db.ForeignKey('albums.id'))
-    album_name = db.Column(db.Text)
 
     duration = db.Column(db.BigInteger)
 
     track_num = db.Column(db.SmallInteger)
     disc_num = db.Column(db.SmallInteger)
+    disc_name = db.Column(db.Text)
 
-    download_url = db.Column(db.Text)
+    path = db.Column(db.Text)
     bitrate = db.Column(db.Integer)
     size = db.Column(db.BigInteger)
     format = db.Column(db.String(32))
@@ -131,8 +130,83 @@ class Playlist(db.Model):
         return "<Playlist:%d - %s>" % (self.id, self.name)
 
 
-plugin_loader.add_api_endpoints(Artist, ['GET'])
-plugin_loader.add_api_endpoints(Album, ['GET'])
-plugin_loader.add_api_endpoints(Track, ['GET'])
-plugin_loader.add_api_endpoints(Genre, ['GET'])
-plugin_loader.add_api_endpoints(Playlist, ['GET'])
+class Movie(db.Model):
+    __tablename__ = 'movies'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.Text, nullable=False)
+    name_sort = db.Column(db.Text)
+
+    path = db.Column(db.Text)
+    release_date = db.Column(db.Date)
+    duration = db.Column(db.BigInteger)
+    size = db.Column(db.BigInteger)
+    format = db.Column(db.String(32))
+
+    width = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+
+
+class Show(db.Model):
+    __tablename__ = 'shows'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.Text, nullable=False)
+    name_sort = db.Column(db.Text)
+
+    seasons = db.relationship('Season', back_populates='show')
+    episodes = db.relationship('Episode', back_populates='show')
+
+
+class Season(db.Model):
+    __tablename__ = 'seasons'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.Text, nullable=False)
+    name_sort = db.Column(db.Text)
+
+    show_key = db.Column(db.Integer, db.ForeignKey('shows.id'))
+
+    show = db.relationship('Show', back_populates='seasons')
+    episodes = db.relationship('Episode', back_populates='season')
+
+
+class Episode(db.Model):
+    __tablename__ = 'episodes'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.Text, nullable=False)
+    name_sort = db.Column(db.Text)
+
+    width = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+
+    show_key = db.Column(db.Integer, db.ForeignKey('shows.id'))
+    season_key = db.Column(db.Integer, db.ForeignKey('seasons.id'))
+
+    show = db.relationship('Show', back_populates='episodes')
+    season = db.relationship('Season', back_populates='episodes')
+
+
+settings.register_key('plugins.base.music.enable', True)
+settings.register_key('plugins.base.movies.enable', True)
+settings.register_key('plugins.base.tv.enable', True)
+
+if settings.get_key('plugins.base.music.enable'):
+    plugin_loader.add_api_endpoints(Artist, ['GET'], include_columns=['name', 'name_sort'])
+    plugin_loader.add_api_endpoints(Album, ['GET'])
+    plugin_loader.add_api_endpoints(Track, ['GET'])
+    plugin_loader.add_api_endpoints(Genre, ['GET'])
+    plugin_loader.add_api_endpoints(Playlist, ['GET'])
+
+if settings.get_key('plugins.base.movies.enable'):
+    plugin_loader.add_api_endpoints(Movie, ['GET'])
+
+if settings.get_key('plugins.base.tv.enable'):
+    plugin_loader.add_api_endpoints(Show, ['GET'])
+    plugin_loader.add_api_endpoints(Season, ['GET'])
+    plugin_loader.add_api_endpoints(Episode, ['GET'])

@@ -22,6 +22,7 @@ def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ) -> Bluep
     """
 
     logger.debug('Creating blueprint \'%s\' with prefix \'%s\'' % (bp_name, url_prefix))
+
     bp = Blueprint(bp_name, __name__, url_prefix=url_prefix)
 
     if hasattr(sys.modules[module_name], '__blueprints__'):
@@ -66,10 +67,9 @@ def add_column(table_name: str, column: database.db.Column):
     database.__queue_create_column__('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
 
 
-def add_api_endpoints(model, methods: List[str], exclude_columns: list = None, include_columns: list = None):
+def add_api_endpoints(model, methods: List[str], include_columns: list = None):
     database.__queue_api_endpoints__(database.APIEndpoint(model=model, methods=methods,
-                                                          include_columns=include_columns,
-                                                          exclude_columns=exclude_columns))
+                                                          include_columns=include_columns))
 
 
 def _load_modules():

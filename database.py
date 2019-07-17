@@ -19,7 +19,6 @@ class APIEndpoint(NamedTuple):
     model: Any
     methods: List[str]
     include_columns: List[str]
-    exclude_columns: List[str]
 
 
 _column_queue: List[str] = []
@@ -58,8 +57,7 @@ def __create_all__():
     for endpoint in _api_endpoints_queue:
         logger.debug('Creating API endpoints for \'%s\'' % endpoint.model.__tablename__)
         api_manager.create_api(endpoint.model, methods=endpoint.methods,
-                               include_columns=endpoint.include_columns,
-                               exclude_columns=endpoint.exclude_columns)
+                               includes=endpoint.include_columns)
 
 
 def __start__():
