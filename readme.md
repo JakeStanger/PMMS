@@ -25,3 +25,7 @@ Out of the box I plan to include the following functionality:
 - A dynamic React UI, using the API
 
 A large chunk of the feature list already exists in PMV, so it's just a matter of porting it across.
+
+## External Requirements
+
+- mediainfo

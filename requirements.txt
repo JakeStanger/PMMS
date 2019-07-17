@@ -4,3 +4,4 @@ flask-login
 flask-restless-continued
 pyyaml
 mutagen
+pymediainfo
