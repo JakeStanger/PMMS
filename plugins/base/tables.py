@@ -60,7 +60,7 @@ class Album(db.Model):
 
     artist = db.relationship('Artist', back_populates='albums')
     tracks: list = db.relationship('Track', back_populates='album', lazy='dynamic')
-    genres = db.relationship('Genre', secondary=album_genre, back_populates='albums')
+    genres: list = db.relationship('Genre', secondary=album_genre, back_populates='albums')
 
     def __repr__(self):
         return "<Album:%d - %s>" % (self.id, self.name)
@@ -197,10 +197,10 @@ settings.register_key('plugins.base.movies.enable', True)
 settings.register_key('plugins.base.tv.enable', True)
 
 if settings.get_key('plugins.base.music.enable'):
-    plugin_loader.add_api_endpoints(Artist, ['GET'], include_columns=['name', 'name_sort'])
-    plugin_loader.add_api_endpoints(Album, ['GET'])
-    plugin_loader.add_api_endpoints(Track, ['GET'])
-    plugin_loader.add_api_endpoints(Genre, ['GET'])
+    plugin_loader.add_api_endpoints(Artist, ['GET'], exclude=['tracks', 'albums'])
+    plugin_loader.add_api_endpoints(Album, ['GET'], exclude=['artist', 'tracks'])
+    plugin_loader.add_api_endpoints(Track, ['GET'], exclude=['artist', 'album', 'playlists'])
+    plugin_loader.add_api_endpoints(Genre, ['GET'], exclude=['albums'])
     plugin_loader.add_api_endpoints(Playlist, ['GET'])
 
 if settings.get_key('plugins.base.movies.enable'):
