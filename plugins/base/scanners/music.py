@@ -10,6 +10,7 @@ import settings
 import server
 from plugins.base.tables import Album, Artist, Track, Genre
 from datetime import datetime
+from .utils import get_name_sort
 
 settings.register_key('plugins.base.music.path', os.path.expanduser('~/Music'))
 
@@ -31,12 +32,6 @@ def get_tag(tags: File, tag_names: List[str], get_all=False):
 
 def get_name(tags: File):
     return get_tag(tags, ['TIT2', 'title', '\xa9nam'])
-
-
-def get_name_sort(name: str):
-    if not name:
-        return None
-    return re.match('(?:The |A )?(.*)', name)[1]
 
 
 def get_artist_name(tags: File):
