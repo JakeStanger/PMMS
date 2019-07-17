@@ -8,17 +8,21 @@ import database
 
 import settings
 import server
-from plugins.base.tables import Album, Artist, Track
+from plugins.base.tables import Album, Artist, Track, Genre
+from datetime import datetime
 
 settings.register_key('plugins.base.music.path', os.path.expanduser('~/Music'))
 
 
-def get_tag(tags: File, tag_names: List[str]):
+def get_tag(tags: File, tag_names: List[str], get_all=False):
     for tag in tag_names:
         val = tags.get(tag)
         if val:
             if hasattr(val, 'text'):
                 val = val.text
+
+            if get_all:
+                return val
 
             while type(val) == list or type(val) ==  tuple:
                 val = val[0]
@@ -43,6 +47,19 @@ def get_album_name(tags: File):
     return get_tag(tags, ['TALB', 'album', '\xa9alb'])
 
 
+def get_genre(name: str):
+    if not name:
+        return None
+
+    album = database.db.session.query(Genre).filter_by(name=name).first()
+    if album:
+        return album
+    else:
+        genre = Genre(name=name)
+        database.db.session.add(genre)
+        return genre
+
+
 def get_artist(name: str):
     if not name:
         return None
@@ -56,15 +73,25 @@ def get_artist(name: str):
         return artist
 
 
-def get_album(name: str, artist: Artist):
+def get_album(name: str, release_date: datetime, genres: List[Genre], artist: Artist):
     if not name:
         return None
 
     album = database.db.session.query(Album).filter_by(name=name).first()
     if album:
+        if genres:
+            existing = [genre.name for genre in album.genres]
+            for genre in genres:
+                if genre.name not in existing:
+                    album.genres.append(genre)
         return album
     else:
-        album = Album(name=name, name_sort=get_name_sort(name), artist=artist)
+        album = Album(name=name,
+                      name_sort=get_name_sort(name),
+                      release_date=release_date,
+                      genres=genres,
+                      artist=artist)
+
         database.db.session.add(album)
         return album
 
@@ -85,12 +112,40 @@ def get_disc_name(tags: File):
     return get_tag(tags, ['TXXX:TSST', 'tsst'])
 
 
+def get_release_date(tags: File):
+    date: str = get_tag(tags, ['TDRC', 'date'])
+
+    if not date:
+        return
+
+    if type(date) is not str:
+        date = str(date)
+
+    if not len(date):
+        return
+
+    if re.match(r'^\d{4}$', date):
+        return datetime.strptime(date, '%Y')
+    else:
+        return datetime.strptime(date, '%Y-%m-%d')
+
+
+def get_genres(tags: File):
+    genres = get_tag(tags, ['TCON', 'genres'], get_all=True) or []
+    return [get_genre(genre) for genre in genres]
+
+
 @server.app.route('/import')
 def import_music():
     music_path = os.path.expanduser(settings.get_key('plugins.base.music.path'))
+
+    total_num = len([*os.walk(music_path)])
+    num = 0
+
     for root, dirs, files in os.walk(music_path):
+        num += 1
         for file in files:
-            print(os.path.join(root, file))
+            print('[%r%%] %s' % (round((num / total_num) * 100, 1), os.path.join(root, file)))
             tags = File(os.path.join(root, file))
 
             if tags is None:
@@ -100,7 +155,7 @@ def import_music():
             name_sort = get_name_sort(name)
 
             artist = get_artist(get_artist_name(tags))
-            album = get_album(get_album_name(tags), artist)
+            album = get_album(get_album_name(tags), get_release_date(tags), get_genres(tags), artist)
 
             duration = get_duration(tags)
 
