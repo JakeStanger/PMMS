@@ -135,7 +135,7 @@ def get_genres(tags: File):
     return [get_genre(genre) for genre in genres]
 
 
-@server.app.route('/import')
+@server.app.route('/import/music', methods=['POST'])
 def import_music():
     music_path = os.path.expanduser(settings.get_key('plugins.base.music.path'))
 
