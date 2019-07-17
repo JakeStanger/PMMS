@@ -67,9 +67,15 @@ def add_column(table_name: str, column: database.db.Column):
     database.__queue_create_column__('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
 
 
-def add_api_endpoints(model, methods: List[str], include_columns: list = None):
-    database.__queue_api_endpoints__(database.APIEndpoint(model=model, methods=methods,
-                                                          include_columns=include_columns))
+def add_api_endpoints(model, methods: List[str],
+                      include: list = None,
+                      exclude: list = None,
+                      page_size=250):
+    database.__queue_api_endpoints__(database.APIEndpoint(model=model,
+                                                          methods=methods,
+                                                          include=include,
+                                                          exclude=exclude,
+                                                          page_size=page_size))
 
 
 def _load_modules():

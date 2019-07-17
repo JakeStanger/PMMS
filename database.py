@@ -7,6 +7,7 @@ from flask_restless import APIManager
 import settings
 import server
 import logging
+
 # import plugin_loader
 
 db: SQLAlchemy = SQLAlchemy()
@@ -18,7 +19,9 @@ logger: logging.Logger
 class APIEndpoint(NamedTuple):
     model: Any
     methods: List[str]
-    include_columns: List[str]
+    include: List[str]
+    exclude: List[str]
+    page_size: int
 
 
 _column_queue: List[str] = []
@@ -56,8 +59,13 @@ def __create_all__():
     # Create API endpoints
     for endpoint in _api_endpoints_queue:
         logger.debug('Creating API endpoints for \'%s\'' % endpoint.model.__tablename__)
-        api_manager.create_api(endpoint.model, methods=endpoint.methods,
-                               includes=endpoint.include_columns)
+        api_manager.create_api(endpoint.model,
+                               methods=endpoint.methods,
+                               includes=endpoint.include,
+                               exclude=endpoint.exclude,
+                               page_size=endpoint.page_size,
+                               max_page_size=1000,
+                               allow_functions=True)
 
 
 def __start__():
