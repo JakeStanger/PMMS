@@ -168,6 +168,8 @@ class Season(db.Model):
     name = db.Column(db.Text, nullable=False)
     name_sort = db.Column(db.Text)
 
+    number = db.Column(db.SmallInteger)
+
     show_key = db.Column(db.Integer, db.ForeignKey('shows.id'))
 
     show = db.relationship('Show', back_populates='seasons')
@@ -181,6 +183,8 @@ class Episode(db.Model):
 
     name = db.Column(db.Text, nullable=False)
     name_sort = db.Column(db.Text)
+
+    number = db.Column(db.SmallInteger)
 
     width = db.Column(db.Integer)
     height = db.Column(db.Integer)
