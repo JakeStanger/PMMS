@@ -30,8 +30,6 @@ class Artist(db.Model):
     name = db.Column(db.Text, nullable=False)
     name_sort = db.Column(db.Text)
 
-    album_count = db.Column(db.SmallInteger)
-
     albums: list = db.relationship('Album', back_populates='artist')
     tracks: list = db.relationship('Track', back_populates='artist')
 
@@ -55,8 +53,6 @@ class Album(db.Model):
     artist_key = db.Column(db.Integer, db.ForeignKey('artists.id'))
 
     release_date = db.Column(db.Date)
-
-    track_count = db.Column(db.SmallInteger)
 
     artist = db.relationship('Artist', back_populates='albums')
     tracks: list = db.relationship('Track', back_populates='album', lazy='dynamic')
