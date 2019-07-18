@@ -2,6 +2,7 @@ from .routes import *
 from .tables import *
 from .scanners.music import *
 from .scanners.movies import *
+from .scanners.television import *
 import logging
 
 logger: logging.Logger
