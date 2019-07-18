@@ -11,7 +11,7 @@ from pymediainfo import MediaInfo
 from datetime import datetime
 from .utils import get_name_sort
 
-settings.register_key('plugins.base.music.path', os.path.expanduser('~/Movies'))
+settings.register_key('plugins.base.movies.path', os.path.expanduser('~/Movies'))
 
 
 def get_name_and_release(path: List[str]):
@@ -25,12 +25,12 @@ def get_name_and_release(path: List[str]):
 
 @server.app.route('/import/movies', methods=['POST'])
 def import_movies():
-    music_path = os.path.expanduser(settings.get_key('plugins.base.movies.path'))
+    movies_path = os.path.expanduser(settings.get_key('plugins.base.movies.path'))
 
-    for root, dirs, files in os.walk(music_path):
+    for root, dirs, files in os.walk(movies_path):
         for file in files:
             full_path = os.path.join(root, file)
-            relative_path = full_path.replace('%s/' % music_path, '')
+            relative_path = full_path.replace('%s/' % movies_path, '')
             path_split = relative_path.split('/')
 
             # print(relative_path)
