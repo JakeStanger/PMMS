@@ -10,6 +10,7 @@ from pymediainfo import MediaInfo
 
 settings.register_key('plugins.base.tv.path', os.path.expanduser('~/Television'))
 
+
 def get_show(show_name: str):
     if not show_name:
         return None
@@ -27,7 +28,7 @@ def get_season(season_name: str, season_num: int, show: Show):
     if not season_name:
         return None
 
-    season = database.db.session.query(Season).filter_by(name=season_name).first()
+    season = database.db.session.query(Season).filter_by(name=season_name, show=show).first()
     if season:
         return season
     else:
@@ -64,19 +65,20 @@ def import_tv():
 
             for track in tracks:
                 show = get_show(show_name)
-                season = get_season('Season %r' % season_num, season_num, show)
+                season = get_season('Season %s' % season_num, season_num, show)
 
                 episode = Episode(
                     name=episode_name,
                     name_sort=get_name_sort(episode_name),
                     number=episode_num,
+                    path=relative_path,
                     duration=track.duration,
                     size=os.path.getsize(full_path),
                     format=track.format,
                     width=track.width,
                     height=track.height,
                     show=show,
-                    season=season,
+                    season=season
                 )
 
                 database.db.session.add(episode)

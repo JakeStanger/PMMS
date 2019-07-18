@@ -186,6 +186,7 @@ class Episode(db.Model):
 
     number = db.Column(db.SmallInteger)
 
+    path = db.Column(db.Text)
     duration = db.Column(db.BigInteger)
     size = db.Column(db.BigInteger)
     format = db.Column(db.String(32))
@@ -215,6 +216,6 @@ if settings.get_key('plugins.base.movies.enable'):
     plugin_loader.add_api_endpoints(Movie, ['GET'])
 
 if settings.get_key('plugins.base.tv.enable'):
-    plugin_loader.add_api_endpoints(Show, ['GET'])
-    plugin_loader.add_api_endpoints(Season, ['GET'])
-    plugin_loader.add_api_endpoints(Episode, ['GET'])
+    plugin_loader.add_api_endpoints(Show, ['GET'], exclude=['seasons', 'episodes'])
+    plugin_loader.add_api_endpoints(Season, ['GET'], exclude=['show', 'episodes'])
+    plugin_loader.add_api_endpoints(Episode, ['GET'], exclude=['show', 'season'])

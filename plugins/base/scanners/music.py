@@ -72,7 +72,7 @@ def get_album(name: str, release_date: datetime, genres: List[Genre], artist: Ar
     if not name:
         return None
 
-    album = database.db.session.query(Album).filter_by(name=name).first()
+    album = database.db.session.query(Album).filter_by(name=name, artist=artist).first()
     if album:
         if genres:
             existing = [genre.name for genre in album.genres]
