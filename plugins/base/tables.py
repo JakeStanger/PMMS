@@ -186,6 +186,10 @@ class Episode(db.Model):
 
     number = db.Column(db.SmallInteger)
 
+    duration = db.Column(db.BigInteger)
+    size = db.Column(db.BigInteger)
+    format = db.Column(db.String(32))
+
     width = db.Column(db.Integer)
     height = db.Column(db.Integer)
 
