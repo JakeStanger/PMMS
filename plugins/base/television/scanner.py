@@ -8,8 +8,6 @@ from .models import Show, Season, Episode
 from plugins.base.utils import get_name_sort
 from pymediainfo import MediaInfo
 
-settings.register_key('plugins.base.tv.path', os.path.expanduser('~/Television'))
-
 
 def get_show(show_name: str):
     if not show_name:

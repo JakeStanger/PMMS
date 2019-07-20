@@ -12,8 +12,6 @@ from .models import Album, Artist, Track, Genre
 from datetime import datetime
 from plugins.base.utils import get_name_sort
 
-settings.register_key('plugins.base.music.path', os.path.expanduser('~/Music'))
-
 
 def get_tag(tags: File, tag_names: List[str], get_all=False):
     for tag in tag_names:

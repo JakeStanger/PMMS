@@ -11,8 +11,6 @@ from pymediainfo import MediaInfo
 from datetime import datetime
 from plugins.base.utils import get_name_sort
 
-settings.register_key('plugins.base.movies.path', os.path.expanduser('~/Movies'))
-
 
 def get_name_and_release(path: List[str]):
     matches = re.match(r'(.+?)(?:(?:\((\d{4})\))|(?:\..{3}$|$))', path[0])
