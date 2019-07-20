@@ -133,7 +133,7 @@ def get_genres(tags: File):
     return [get_genre(genre) for genre in genres]
 
 
-def import_track(full_path: str, library_path: str):
+def import_track(full_path: str, library_path: str, track: Track = None):
     tags = File(full_path)
 
     if tags is None:
@@ -158,20 +158,26 @@ def import_track(full_path: str, library_path: str):
     size = os.path.getsize(full_path)
     bitrate = tags.info.bitrate
 
-    track = Track(name=name,
-                  name_sort=name_sort,
-                  artist=artist,
-                  album=album,
-                  duration=duration,
-                  track_num=track_num,
-                  disc_num=disc_num,
-                  disc_name=disc_name,
-                  path=relative_path,
-                  format=format,
-                  bitrate=bitrate,
-                  size=size)
+    add = False
+    if track is None:
+        track = Track()
+        add = True
 
-    database.db.session.add(track)
+    track.name = name
+    track.name_sort = name_sort
+    track.artist = artist
+    track.album = album
+    track.duration = duration
+    track.track_num = track_num
+    track.disc_num = disc_num
+    track.disc_name = disc_name
+    track.path = relative_path
+    track.format = format
+    track.bitrate = bitrate
+    track.size = size
+
+    if add:
+        database.db.session.add(track)
 
 
 @server.app.route('/import/music', methods=['POST'])
