@@ -133,6 +133,47 @@ def get_genres(tags: File):
     return [get_genre(genre) for genre in genres]
 
 
+def import_track(full_path: str, library_path: str):
+    tags = File(full_path)
+
+    if tags is None:
+        return
+
+    relative_path = full_path.replace('%s/' % library_path, '')
+
+    name = get_name(tags)
+    name_sort = get_name_sort(name)
+
+    artist = get_artist(get_artist_name(tags))
+    album_artist = get_artist(get_album_artist_name(tags))
+    album = get_album(get_album_name(tags), get_release_date(tags), get_genres(tags), artist, album_artist)
+
+    duration = get_duration(tags)
+
+    track_num = get_track_num(tags)
+    disc_num = get_disc_num(tags)
+    disc_name = get_disc_name(tags)
+
+    format = relative_path.split('.')[-1]
+    size = os.path.getsize(full_path)
+    bitrate = tags.info.bitrate
+
+    track = Track(name=name,
+                  name_sort=name_sort,
+                  artist=artist,
+                  album=album,
+                  duration=duration,
+                  track_num=track_num,
+                  disc_num=disc_num,
+                  disc_name=disc_name,
+                  path=relative_path,
+                  format=format,
+                  bitrate=bitrate,
+                  size=size)
+
+    database.db.session.add(track)
+
+
 @server.app.route('/import/music', methods=['POST'])
 def import_music():
     music_path = os.path.expanduser(settings.get_key('plugins.base.music.path'))
@@ -144,43 +185,8 @@ def import_music():
         num += 1
         for file in files:
             print('[%r%%] %s' % (round((num / total_num) * 100, 1), os.path.join(root, file)))
-            tags = File(os.path.join(root, file))
 
-            if tags is None:
-                continue
-
-            name = get_name(tags)
-            name_sort = get_name_sort(name)
-
-            artist = get_artist(get_artist_name(tags))
-            album_artist = get_artist(get_album_artist_name(tags))
-            album = get_album(get_album_name(tags), get_release_date(tags), get_genres(tags), artist, album_artist)
-
-            duration = get_duration(tags)
-
-            track_num = get_track_num(tags)
-            disc_num = get_disc_num(tags)
-            disc_name = get_disc_name(tags)
-
-            path = os.path.join(music_path, file)
-            format = file.split('.')[-1]
-            size = os.path.getsize(os.path.join(root, file))
-            bitrate = tags.info.bitrate
-
-            track = Track(name=name,
-                          name_sort=name_sort,
-                          artist=artist,
-                          album=album,
-                          duration=duration,
-                          track_num=track_num,
-                          disc_num=disc_num,
-                          disc_name=disc_name,
-                          path=path,
-                          format=format,
-                          bitrate=bitrate,
-                          size=size)
-
-            database.db.session.add(track)
+            import_track(os.path.join(root, file), music_path)
 
     database.db.session.commit()
     return jsonify({'message': 'Import successful'}), 201
