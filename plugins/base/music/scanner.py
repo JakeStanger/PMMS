@@ -8,9 +8,9 @@ import database
 
 import settings
 import server
-from plugins.base.tables import Album, Artist, Track, Genre
+from .models import Album, Artist, Track, Genre
 from datetime import datetime
-from .utils import get_name_sort
+from plugins.base.utils import get_name_sort
 
 settings.register_key('plugins.base.music.path', os.path.expanduser('~/Music'))
 
@@ -72,7 +72,7 @@ def get_artist(name: str):
         return artist
 
 
-def get_album(name: str, release_date: datetime, genres: List[Genre], artist: Artist):
+def get_album(name: str, release_date: datetime, genres: List[Genre], artist: Artist, album_artist: Artist):
     if not name:
         return None
 
@@ -89,7 +89,8 @@ def get_album(name: str, release_date: datetime, genres: List[Genre], artist: Ar
                       name_sort=get_name_sort(name),
                       release_date=release_date,
                       genres=genres,
-                      artist=artist)
+                      artist=artist,
+                      album_artist=album_artist)
 
         database.db.session.add(album)
         return album
@@ -154,7 +155,8 @@ def import_music():
             name_sort = get_name_sort(name)
 
             artist = get_artist(get_artist_name(tags))
-            album = get_album(get_album_name(tags), get_release_date(tags), get_genres(tags), artist)
+            album_artist = get_artist(get_album_artist_name(tags))
+            album = get_album(get_album_name(tags), get_release_date(tags), get_genres(tags), artist, album_artist)
 
             duration = get_duration(tags)
 

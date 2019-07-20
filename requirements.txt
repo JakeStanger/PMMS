@@ -5,3 +5,4 @@ flask-restless-continued
 pyyaml
 mutagen
 pymediainfo
+watchdog

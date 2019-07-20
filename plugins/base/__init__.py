@@ -1,8 +1,7 @@
-from .routes import *
-from .tables import *
-from .scanners.music import *
-from .scanners.movies import *
-from .scanners.television import *
+from .users import *
+from .music import init as init_music
+from .movies import init as init_movies
+from .television import init as init_television
 import logging
 
 logger: logging.Logger
@@ -11,5 +10,9 @@ logger: logging.Logger
 def init():
     global logger
     logger = logging.getLogger(__name__)
+
+    init_music()
+    init_movies()
+    init_television()
 
     logger.info('Base module loaded!')

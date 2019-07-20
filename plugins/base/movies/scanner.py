@@ -6,10 +6,10 @@ import settings
 import server
 import database
 from flask import jsonify
-from plugins.base.tables import Movie
+from .models import Movie
 from pymediainfo import MediaInfo
 from datetime import datetime
-from .utils import get_name_sort
+from plugins.base.utils import get_name_sort
 
 settings.register_key('plugins.base.movies.path', os.path.expanduser('~/Movies'))
 
@@ -33,7 +33,6 @@ def import_movies():
             relative_path = full_path.replace('%s/' % movies_path, '')
             path_split = relative_path.split('/')
 
-            # print(relative_path)
             print(relative_path)
 
             media_info = MediaInfo.parse(full_path)

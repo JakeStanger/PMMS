@@ -8,7 +8,7 @@ from database import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import server
-from .tables import User
+from .models import User
 
 logger = logging.getLogger(__name__)
 

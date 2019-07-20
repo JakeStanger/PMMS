@@ -4,8 +4,8 @@ import server
 import database
 import settings
 from flask import jsonify
-from plugins.base.tables import Show, Season, Episode
-from .utils import get_name_sort
+from .models import Show, Season, Episode
+from plugins.base.utils import get_name_sort
 from pymediainfo import MediaInfo
 
 settings.register_key('plugins.base.tv.path', os.path.expanduser('~/Television'))
