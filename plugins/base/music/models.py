@@ -79,7 +79,7 @@ class Track(db.Model):
     disc_num = db.Column(db.SmallInteger)
     disc_name = db.Column(db.Text)
 
-    path = db.Column(db.Text)
+    path = db.Column(db.Text, unique=True)
     bitrate = db.Column(db.Integer)
     size = db.Column(db.BigInteger)
     format = db.Column(db.String(32))

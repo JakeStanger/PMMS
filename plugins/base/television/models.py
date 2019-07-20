@@ -39,7 +39,7 @@ class Episode(db.Model):
 
     number = db.Column(db.SmallInteger)
 
-    path = db.Column(db.Text)
+    path = db.Column(db.Text, unique=True)
     duration = db.Column(db.BigInteger)
     size = db.Column(db.BigInteger)
     format = db.Column(db.String(32))

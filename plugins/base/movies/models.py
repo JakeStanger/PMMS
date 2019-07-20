@@ -9,7 +9,7 @@ class Movie(db.Model):
     name = db.Column(db.Text, nullable=False)
     name_sort = db.Column(db.Text)
 
-    path = db.Column(db.Text)
+    path = db.Column(db.Text, unique=True)
     release_date = db.Column(db.Date)
     duration = db.Column(db.BigInteger)
     size = db.Column(db.BigInteger)
