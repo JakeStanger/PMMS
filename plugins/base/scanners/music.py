@@ -38,6 +38,10 @@ def get_artist_name(tags: File):
     return get_tag(tags, ['TPE1', 'artist', '\xa9ART'])
 
 
+def get_album_artist_name(tags: File):
+    return get_tag(tags, ['TPE2', 'albumartist', 'aART'])
+
+
 def get_album_name(tags: File):
     return get_tag(tags, ['TALB', 'album', '\xa9alb'])
 

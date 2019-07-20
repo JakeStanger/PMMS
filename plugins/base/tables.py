@@ -51,10 +51,13 @@ class Album(db.Model):
     name_sort = db.Column(db.Text)
 
     artist_key = db.Column(db.Integer, db.ForeignKey('artists.id'))
+    album_artist_key = db.Column(db.Integer, db.ForeignKey('artists.id'))
 
     release_date = db.Column(db.Date)
 
     artist = db.relationship('Artist', back_populates='albums')
+    album_artist = db.relationship('Artist')
+
     tracks: list = db.relationship('Track', back_populates='album', lazy='dynamic')
     genres: list = db.relationship('Genre', secondary=album_genre, back_populates='albums')
 
