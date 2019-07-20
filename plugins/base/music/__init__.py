@@ -18,4 +18,4 @@ def init():
         plugin_loader.add_api_endpoints(Genre, ['GET'], exclude=['albums'])
         plugin_loader.add_api_endpoints(Playlist, ['GET'])
 
-    watch_music()
+        watch_music()

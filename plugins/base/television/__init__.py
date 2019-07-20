@@ -16,4 +16,4 @@ def init():
         plugin_loader.add_api_endpoints(Season, ['GET'], exclude=['show', 'episodes'])
         plugin_loader.add_api_endpoints(Episode, ['GET'], exclude=['show', 'season'])
 
-    watch_television()
+        watch_television()

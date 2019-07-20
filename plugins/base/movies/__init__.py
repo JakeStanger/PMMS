@@ -14,4 +14,4 @@ def init():
     if settings.get_key('plugins.base.movies.enable'):
         plugin_loader.add_api_endpoints(Movie, ['GET'])
 
-    watch_movies()
+        watch_movies()
