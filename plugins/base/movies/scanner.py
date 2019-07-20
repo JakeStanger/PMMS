@@ -21,6 +21,44 @@ def get_name_and_release(path: List[str]):
         return matches.groups()
 
 
+def import_movie(path: str, movie: Movie = None):
+    movies_path = os.path.expanduser(settings.get_key('plugins.base.movies.path'))
+    relative_path = path.replace('%s/' % movies_path, '')
+    path_split = relative_path.split('/')
+
+    media_info = MediaInfo.parse(path)
+
+    tracks = [track for track in media_info.tracks if track.track_type == 'Video']
+    if not len(tracks):
+        return
+
+    for track in tracks:
+        name, release = get_name_and_release(path_split)
+        if release:
+            release = release.replace('(', '').replace(')', '')
+            release = datetime.strptime(release, '%Y')
+
+        add = False
+        if not movie:
+            movie = Movie()
+            add = True
+
+        name = name.strip()
+
+        movie.name = name
+        movie.name_sort = get_name_sort(name)
+        movie.path = relative_path
+        movie.release_date = release
+        movie.duration = track.duration
+        movie.size = os.path.getsize(path)
+        movie.format = track.format
+        movie.width = track.width
+        movie.height = track.height
+
+        if add:
+            database.db.session.add(movie)
+
+
 @server.app.route('/import/movies', methods=['POST'])
 def import_movies():
     movies_path = os.path.expanduser(settings.get_key('plugins.base.movies.path'))
@@ -29,33 +67,10 @@ def import_movies():
         for file in files:
             full_path = os.path.join(root, file)
             relative_path = full_path.replace('%s/' % movies_path, '')
-            path_split = relative_path.split('/')
 
             print(relative_path)
 
-            media_info = MediaInfo.parse(full_path)
-
-            tracks = [track for track in media_info.tracks if track.track_type == 'Video']
-            if not len(tracks):
-                continue
-
-            for track in tracks:
-                name, release = get_name_and_release(path_split)
-                if release:
-                    release = release.replace('(', '').replace(')', '')
-                    release = datetime.strptime(release, '%Y')
-
-                movie = Movie(name=name,
-                              name_sort=get_name_sort(name),
-                              path=relative_path,
-                              release_date=release,
-                              duration=track.duration,
-                              size=os.path.getsize(full_path),
-                              format=track.format,
-                              width=track.width,
-                              height=track.height)
-
-                database.db.session.add(movie)
+            import_movie(full_path)
 
     database.db.session.commit()
 

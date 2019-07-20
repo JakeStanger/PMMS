@@ -133,13 +133,15 @@ def get_genres(tags: File):
     return [get_genre(genre) for genre in genres]
 
 
-def import_track(full_path: str, library_path: str, track: Track = None):
+def import_track(full_path: str, track: Track = None):
+    music_path = os.path.expanduser(settings.get_key('plugins.base.music.path'))
+
     tags = File(full_path)
 
     if tags is None:
         return
 
-    relative_path = full_path.replace('%s/' % library_path, '')
+    relative_path = full_path.replace('%s/' % music_path, '')
 
     name = get_name(tags)
     name_sort = get_name_sort(name)
@@ -192,7 +194,7 @@ def import_music():
         for file in files:
             print('[%r%%] %s' % (round((num / total_num) * 100, 1), os.path.join(root, file)))
 
-            import_track(os.path.join(root, file), music_path)
+            import_track(os.path.join(root, file))
 
     database.db.session.commit()
     return jsonify({'message': 'Import successful'}), 201

@@ -14,6 +14,11 @@ observer: Observer
 
 
 class MusicEventHandler(FileSystemEventHandler):
+    library_path: str
+
+    def __init__(self):
+        self.library_path = os.path.expanduser(settings.get_key('plugins.base.music.path'))
+
     def on_created(self, event):
         if event.is_directory:
             return
@@ -21,7 +26,7 @@ class MusicEventHandler(FileSystemEventHandler):
         path = event.src_path
 
         with server.app.app_context():
-            import_track(path, settings.get_key('plugins.base.music.path'))
+            import_track(path)
             db.session.commit()
 
         logger.info('Imported new track at \'%s\'' % path)
@@ -33,16 +38,15 @@ class MusicEventHandler(FileSystemEventHandler):
         src_path = event.src_path
         dest_path = event.dest_path
 
-        library_path = settings.get_key('plugins.base.music.path')
-        relative_path = src_path.replace('%s/' % library_path, '')
+        relative_path = src_path.replace('%s/' % self.library_path, '')
 
         with server.app.app_context():
             track = db.session.query(Track).filter_by(path=relative_path).first()
 
             if track:
-                track.path = dest_path.replace('%s/' % library_path, '')
+                track.path = dest_path.replace('%s/' % self.library_path, '')
             else:
-                import_track(dest_path, library_path)
+                import_track(dest_path)
 
             db.session.commit()
 
@@ -53,12 +57,11 @@ class MusicEventHandler(FileSystemEventHandler):
             return
 
         full_path = event.src_path
-        library_path = settings.get_key('plugins.base.music.path')
-        relative_path = full_path.replace('%s/' % library_path, '')
+        relative_path = full_path.replace('%s/' % self.library_path, '')
 
         with server.app.app_context():
             track = db.session.query(Track).filter_by(path=relative_path).first()
-            import_track(full_path, library_path, track)
+            import_track(full_path, track)
             db.session.commit()
 
         logger.info('Modified existing track at \'%s\'' % full_path)
@@ -68,8 +71,7 @@ class MusicEventHandler(FileSystemEventHandler):
             return
 
         full_path = event.src_path
-        library_path = settings.get_key('plugins.base.music.path')
-        relative_path = full_path.replace('%s/' % library_path, '')
+        relative_path = full_path.replace('%s/' % self.library_path, '')
 
         with server.app.app_context():
             db.session.query(Track).filter_by(path=relative_path).delete()
@@ -85,7 +87,6 @@ def watch_music():
     logger = logging.getLogger(__name__)
 
     path = os.path.expanduser(settings.get_key('plugins.base.music.path'))
-
     logger.debug('Starting music filewatcher on \'%s\'' % path)
 
     event_handler = MusicEventHandler()
