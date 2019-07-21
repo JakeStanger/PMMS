@@ -1,28 +1,15 @@
 from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
 import logging
 import settings
 import os
 import atexit
-import server
-from database import db
+
+from plugins.base.television import Episode
+from plugins.base.utils import MediaEventHandler
+from .scanner import import_tv
 
 logger: logging.Logger
 observer: Observer
-
-
-class TelevisionEventHandler(FileSystemEventHandler):
-    def on_created(self, event):
-        pass
-
-    def on_moved(self, event):
-        pass
-
-    def on_modified(self, event):
-        pass
-
-    def on_deleted(self, event):
-        pass
 
 
 def watch_television():
@@ -35,7 +22,7 @@ def watch_television():
 
     logger.debug('Starting television filewatcher on \'%s\'' % path)
 
-    event_handler = TelevisionEventHandler()
+    event_handler = MediaEventHandler(path, import_tv, Episode)
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)
     observer.start()
