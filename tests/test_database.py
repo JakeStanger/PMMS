@@ -18,23 +18,25 @@ class TestModel(database.db.Model):
     name = database.db.Column(database.db.String)
 
 
-# TODO: Fix test (probably after some refactoring)
 def test_add_column():
     first_name = database.db.Column(database.db.Integer, name='first_name')
     assert first_name is not None
-    plugin_loader.add_column('test_model', first_name)
+    plugin_loader.add_column(TestModel, first_name)
     assert len(database._column_queue) == 1
 
 
-database.__create_all__()
+def test_create_endpoints():
+    plugin_loader.add_api_endpoints(TestModel, ['GET'])
+
+
+def test_create_all():
+    database.__create_all__()
 
 
 def test_add_row():
-    row = TestModel(name='Hello world'
-                    # , first_name='Hello'
-                    )
+    row = TestModel(name='Hello world', first_name='Hello')
     assert row.name == 'Hello world'
-    # assert row.first_name == 'Hello'
+    assert row.first_name == 'Hello'
     assert row.id is None
 
     database.db.session.add(row)
@@ -47,5 +49,21 @@ def test_get_row():
     assert type(row) == TestModel
 
     assert row.name == 'Hello world'
-    # assert row.first_name == 'Hello'
+    assert row.first_name == 'Hello'
     assert type(row.id) == int
+
+
+def test_get_row_endpoint():
+    with server.app.test_client() as c:
+        rv = c.get('/api/test_model/1')
+
+        res = rv.json
+        assert res is not None
+        assert type(res) == dict
+        assert 'data' in res
+        assert 'attributes' in res['data']
+
+        attributes = res['data']['attributes']
+
+        assert attributes['name'] == 'Hello world'
+        assert attributes['first_name'] == 'Hello'
