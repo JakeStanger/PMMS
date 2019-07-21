@@ -13,5 +13,8 @@ addons:
     packages:
       - mediainfo
 
+before_script:
+  - 'mkdir -p ~/{Music,Movies,Television}'
+
 script:
   - pytest -v
