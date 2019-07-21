@@ -1,5 +1,7 @@
 # Python Modular Media Server
 
+[![Build Status](https://travis-ci.com/JakeStanger/PMMS.svg?branch=master)](https://travis-ci.com/JakeStanger/PMMS)
+
 ## Reasoning
 
 Being able to easily publically access your own media shouldn't be a lot to ask for. Plex comes close to my own needs, but the API is poorly documented, the mobile app is far from great, and I'd rather have something open if at all possible. 
