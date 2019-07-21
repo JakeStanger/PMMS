@@ -48,15 +48,15 @@ def get_blueprint(bp_name: str, module_name: str) -> Blueprint:
     return getattr(sys.modules[module_name], '__blueprints__')[bp_name]
 
 
-def add_column(table_name: str, column: database.db.Column):
+def add_column(model, column: database.db.Column):
     """
-    Adds a column to an existing table.
+    Adds a column to an existing model.
     If the column exists already, nothing will happen.
 
     This function queues a direct SQL ALTER TABLE query,
     which will be executed once SQLAlchemy has created tables.
 
-    :param table_name: The table name
+    :param model: The model
     :param column: An SQLAlchemy column instance
     """
 
@@ -64,7 +64,10 @@ def add_column(table_name: str, column: database.db.Column):
     column_name = column.compile(dialect=engine.dialect)
     column_type = column.type.compile(engine.dialect)
 
-    database.__queue_create_column__('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
+    database.__queue_create_column__('ALTER TABLE %s ADD COLUMN %s %s' % (model.__tablename__, column_name, column_type))
+
+    # model[column_name] = property(column)
+    setattr(model, str(column_name), column)
 
 
 def add_api_endpoints(model, methods: List[str],
