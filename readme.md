@@ -1,6 +1,7 @@
 # Python Modular Media Server
 
 [![Build Status](https://travis-ci.com/JakeStanger/PMMS.svg?branch=master)](https://travis-ci.com/JakeStanger/PMMS)
+[![Coverage Status](https://coveralls.io/repos/github/JakeStanger/PMMS/badge.svg?branch=master)](https://coveralls.io/github/JakeStanger/PMMS?branch=master)
 
 ## Reasoning
 
