@@ -16,7 +16,7 @@ addons:
 before_script:
   - 'wget https://github.com/JakeStanger/PMMS-Testing-Media/archive/master.zip'
   - 'unzip master.zip'
-  - 'mv PMMS-Testing-Media/{Music,Movies,Television} .'
+  - 'mv PMMS-Testing-Media-master/{Music} .'
   - 'mkdir -p ~/{Music,Movies,Television}'
 
 script:
