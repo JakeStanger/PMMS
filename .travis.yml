@@ -17,4 +17,7 @@ before_script:
   - 'mkdir -p ~/{Music,Movies,Television}'
 
 script:
-  - pytest -v
+  - pytest -v --cov-report term --cov=./
+
+after_success:
+  - codecov
