@@ -12,7 +12,7 @@ plugin_loader.__start__()
 
 def test_import():
     with server.app.test_client() as c:
-        rv = c.get('/import/music')
+        rv = c.post('/import/music')
         res = rv.json
         assert res['message'] == 'Import successful'
 
