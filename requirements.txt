@@ -1,5 +1,6 @@
 pytest
 pytest-cov
+python-coveralls
 flask
 flask_sqlalchemy
 flask-login
