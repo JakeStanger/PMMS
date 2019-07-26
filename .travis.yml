@@ -18,7 +18,7 @@ before_script:
   - 'unzip master.zip'
   - 'mv PMMS-Testing-Media-master/Music ~'
   - 'mv PMMS-Testing-Media-master/Movies ~'
-  - 'mkdir -p ~/{Music,Movies,Television}'
+  - 'mv PMMS-Testing-Media-master/Television ~'
 
 script:
   - pytest -v --cov-report term --cov=./
