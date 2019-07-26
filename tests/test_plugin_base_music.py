@@ -51,6 +51,7 @@ def test_tracks_exist():
     assert tracks is not None
     assert len(tracks) == 10
 
+    tracks = sorted(tracks, key=lambda x: x.track_num)
     track = tracks[0]
 
     assert track.name == 'Hello'
