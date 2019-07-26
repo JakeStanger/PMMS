@@ -3,7 +3,8 @@ from typing import List, Dict, NamedTuple, Any
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
-from flask_restless import APIManager
+from flask_restless import APIManager, ProcessingException
+from flask_login import current_user
 import settings
 import server
 import logging
@@ -38,6 +39,11 @@ def __queue_api_endpoints__(endpoints: APIEndpoint):
     _api_endpoints_queue.append(endpoints)
 
 
+def auth_func(**kw):
+    if not current_user.is_authenticated:
+        raise ProcessingException(description='Not Authorized', code=401)
+
+
 def __create_all__():
     global _column_queue
     global _api_endpoints_queue
@@ -65,7 +71,9 @@ def __create_all__():
                                exclude=endpoint.exclude,
                                page_size=endpoint.page_size,
                                max_page_size=1000,
-                               allow_functions=True)
+                               allow_functions=True,
+                               preprocessors=dict(GET_RESOURCE=[auth_func],
+                                                  GET_COLLECTION=[auth_func]))
 
 
 def __start__():
