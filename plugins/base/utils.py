@@ -8,7 +8,7 @@ from watchdog.events import FileSystemEventHandler
 def get_name_sort(name: str):
     if not name:
         return None
-    return re.match('(?:The |A )?(.*)', name)[1]
+    return re.match('^(?:The |A )?(.*)', name)[1]
 
 
 class MediaEventHandler(FileSystemEventHandler):
