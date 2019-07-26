@@ -16,9 +16,8 @@ addons:
 before_script:
   - 'wget https://github.com/JakeStanger/PMMS-Testing-Media/archive/master.zip'
   - 'unzip master.zip'
-  - 'mv PMMS-Testing-Media-master/Music .'
+  - 'mv PMMS-Testing-Media-master/Music ~'
   - 'mkdir -p ~/{Music,Movies,Television}'
-  - 'ls ~/Music'
 
 script:
   - pytest -v --cov-report term --cov=./
