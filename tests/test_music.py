@@ -4,15 +4,28 @@ import settings
 import plugin_loader
 from plugins.base.music.models import Artist, Album, Track
 
-settings.__start__()
-server.__start__()
-database.__start__()
-plugin_loader.__start__()
+# server.__start__()
+# settings.__start__()
+# database.__start__()
+#
+# plugin_loader.__start__()
+
+# server.app.config['DEBUG'] = True
+# server.app.config['TESITNG'] = True
+
+
+def test_app_start():
+    server.__start__()
+    settings.__start__()
+    database.__start__()
+
+    plugin_loader.__start__()
 
 
 def test_import():
     with server.app.test_client() as c:
         rv = c.post('/import/music')
+        assert rv.status_code == 201
         res = rv.json
         assert res['message'] == 'Import successful'
 
