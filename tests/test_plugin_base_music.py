@@ -54,6 +54,6 @@ def test_tracks_exist():
     tracks = sorted(tracks, key=lambda x: x.track_num)
     track = tracks[0]
 
-    assert track.name == 'Hello'
-    assert track.name_sort == 'Hello'
+    assert track.name == 'Hello World'
+    assert track.name_sort == 'Hello World'
     assert type(track.id) == int
