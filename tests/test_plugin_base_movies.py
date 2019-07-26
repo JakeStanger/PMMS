@@ -22,6 +22,12 @@ def test_import():
 
 
 def test_movie_exists():
+    movies = database.db.session.query(Movie).all()
+    assert movies is not None
+    assert len(movies) == 1
+
+    assert movies == "trees"
+
     movie = database.db.session.query(Movie).filter_by(name='The Code Movie').one()
     assert movie is not None
     assert movie.name == 'The Code Movie'
