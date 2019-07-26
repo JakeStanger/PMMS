@@ -63,7 +63,9 @@ def __create_all__():
 
         if endpoint.auth_func:
             preprocessors = dict(GET_RESOURCE=[endpoint.auth_func],
-                                 GET_COLLECTION=[endpoint.auth_func])
+                                 GET_COLLECTION=[endpoint.auth_func],
+                                 GET_RELATION=[endpoint.auth_func],
+                                 GET_RELATED_RESOURCE=[endpoint.auth_func])
         else:
             preprocessors = {}
 
