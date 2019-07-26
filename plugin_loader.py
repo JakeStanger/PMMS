@@ -73,12 +73,14 @@ def add_column(model, column: database.db.Column):
 def add_api_endpoints(model, methods: List[str],
                       include: list = None,
                       exclude: list = None,
-                      page_size=250):
+                      page_size=250,
+                      auth_func=None):
     database.__queue_api_endpoints__(database.APIEndpoint(model=model,
                                                           methods=methods,
                                                           include=include,
                                                           exclude=exclude,
-                                                          page_size=page_size))
+                                                          page_size=page_size,
+                                                          auth_func=auth_func))
 
 
 def _load_modules():

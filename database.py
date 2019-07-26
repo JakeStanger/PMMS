@@ -1,10 +1,9 @@
 from sqlite3 import OperationalError
-from typing import List, Dict, NamedTuple, Any
+from typing import List, NamedTuple, Any
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
-from flask_restless import APIManager, ProcessingException
-from flask_login import current_user
+from flask_restless import APIManager
 import settings
 import server
 import logging
@@ -23,6 +22,7 @@ class APIEndpoint(NamedTuple):
     include: List[str]
     exclude: List[str]
     page_size: int
+    auth_func: Any
 
 
 _column_queue: List[str] = []
@@ -37,11 +37,6 @@ def __queue_create_column__(sql: str):
 def __queue_api_endpoints__(endpoints: APIEndpoint):
     global _api_endpoints_queue
     _api_endpoints_queue.append(endpoints)
-
-
-def auth_func(**kw):
-    if not current_user.is_authenticated:
-        raise ProcessingException(description='Not Authorized', code=401)
 
 
 def __create_all__():
@@ -65,6 +60,13 @@ def __create_all__():
     # Create API endpoints
     for endpoint in _api_endpoints_queue:
         logger.debug('Creating API endpoints for \'%s\'' % endpoint.model.__tablename__)
+
+        if endpoint.auth_func:
+            preprocessors = dict(GET_RESOURCE=[endpoint.auth_func],
+                                 GET_COLLECTION=[endpoint.auth_func])
+        else:
+            preprocessors = {}
+
         api_manager.create_api(endpoint.model,
                                methods=endpoint.methods,
                                includes=endpoint.include,
@@ -72,8 +74,7 @@ def __create_all__():
                                page_size=endpoint.page_size,
                                max_page_size=1000,
                                allow_functions=True,
-                               preprocessors=dict(GET_RESOURCE=[auth_func],
-                                                  GET_COLLECTION=[auth_func]))
+                               preprocessors=preprocessors)
 
 
 def __start__():
