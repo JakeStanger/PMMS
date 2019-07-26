@@ -17,6 +17,7 @@ before_script:
   - 'wget https://github.com/JakeStanger/PMMS-Testing-Media/archive/master.zip'
   - 'unzip master.zip'
   - 'mv PMMS-Testing-Media-master/Music ~'
+  - 'mv PMMS-Testing-Media-master/Movies ~'
   - 'mkdir -p ~/{Music,Movies,Television}'
 
 script:
