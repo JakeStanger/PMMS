@@ -9,8 +9,6 @@ logger: logging.Logger
 def __run__():
     logger.debug('Starting Flask server.')
 
-    app.secret_key = settings.get_key('secret_key')
-
     app.run()
 
 
@@ -19,4 +17,5 @@ def __start__():
     global logger
 
     logger = logging.getLogger(__name__)
+    app.secret_key = settings.get_key('secret_key')
     app.app_context().push()
