@@ -22,7 +22,7 @@ def auth_request(**kw):
     if not current_user.is_authenticated:
         user = load_user_from_request(request)
         if not user:
-            raise ProcessingException(description='Not Authorized', code=401)
+            raise ProcessingException(description='Not Authorized', status=401)
 
 
 class MediaEventHandler(FileSystemEventHandler):
