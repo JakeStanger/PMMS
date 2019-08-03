@@ -22,7 +22,7 @@ def get_key(path: str):
 
     rv = settings
     for path in keys:
-        if path in rv:
+        if rv and path in rv:
             rv = rv[path]
         else:
             return None
@@ -39,7 +39,7 @@ def set_key(path: str, value):
     rv = settings
 
     for i, path in enumerate(keys):
-        if path not in rv:
+        if path not in rv or rv[path] is None:
             rv[path] = {}
 
         if i == len(keys)-1:
