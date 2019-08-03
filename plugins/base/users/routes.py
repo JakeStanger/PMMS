@@ -2,7 +2,7 @@ import logging
 
 import helpers
 import plugin_loader
-from flask import request, Response, jsonify
+from flask import request, jsonify
 from flask_login import LoginManager, login_user, login_required, current_user
 from database import db
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -59,9 +59,9 @@ def login():
             login_user(user, True)
             return jsonify({'username': user.username, 'api_key': user.api_key}), 202
         else:
-            return Response('{"message": "Invalid password"}', status=401)
+            return jsonify({'message': 'Invalid password'}), 401
     else:
-        return Response('{"message": "Invalid username"}', status=401)
+        return jsonify({'message': 'Invalid username'}), 401
 
 
 @users.route('/signup', methods=['POST'])
@@ -72,7 +72,7 @@ def create_user():
 
     user_exists = load_user_from_username(username) is not None
     if user_exists:
-        return Response('{"message": "User already exists"}', status=400)
+        return jsonify({'message': 'User already exists'}), 400
 
     user = User(username=username, password=generate_password_hash(password), api_key=helpers.generate_secret_key())
     db.session.add(user)
@@ -80,7 +80,7 @@ def create_user():
 
     login_user(user, True)
 
-    return Response('{"message": "User created"}', status=201)
+    return jsonify({'message': 'User created'}), 201
 
 
 @users.route('/secure')
