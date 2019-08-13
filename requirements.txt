@@ -1,6 +1,7 @@
 pytest
 pytest-cov
 python-coveralls
+
 flask
 flask_sqlalchemy
 flask-login
@@ -9,3 +10,7 @@ pyyaml
 mutagen
 pymediainfo
 watchdog
+
+pylast
+musicbrainzngs
+lyricsgenius
