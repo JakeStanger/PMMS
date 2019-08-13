@@ -15,4 +15,4 @@ def init():
     init_movies()
     init_television()
 
-    logger.info('Base module loaded!')
+    logger.info('Base plugin loaded')
