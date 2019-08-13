@@ -27,7 +27,6 @@ def init():
                 with open(full_path, 'r') as f:
                     return f.read()
 
-
         def write_cache(lyrics: str, track: Track):
             cache_path = os.path.expanduser(settings.get_key('plugins.base_extra.music.lyrics.cache.path'))
             full_path = os.path.join(cache_path, '%s - %s.txt' % (track.artist.name, track.name))
