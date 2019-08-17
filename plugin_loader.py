@@ -11,19 +11,23 @@ from flask import Blueprint
 logger: logging.Logger
 
 
-def create_blueprint(bp_name: str, url_prefix: str, module_name: str, ) -> Blueprint:
+def create_blueprint(bp_name: str, url_prefix: str, module_name: str,
+                     template_folder: str = None, static_folder: str = None) -> Blueprint:
     """
     Creates a Flask blueprint which will automatically be registered.
 
     :param bp_name: The blueprint name
     :param url_prefix: The URL prefix for the blueprint
     :param module_name: The module name of the **entry point** for the plugin. e.g `plugins.base`
+    :param template_folder: The folder for template files
+    :param static_folder: The folder for static files
     :return: The new blueprint
     """
 
     logger.debug('Creating blueprint \'%s\' with prefix \'%s\'' % (bp_name, url_prefix))
 
-    bp = Blueprint(bp_name, __name__, url_prefix=url_prefix)
+    bp = Blueprint(bp_name, __name__, url_prefix=url_prefix,
+                   template_folder=template_folder, static_folder=static_folder)
 
     if hasattr(sys.modules[module_name], '__blueprints__'):
         existing_bps = getattr(sys.modules[module_name], '__blueprints__')
