@@ -1,6 +1,7 @@
 from flask import jsonify
 from sqlalchemy.orm.exc import NoResultFound
 
+
 def init():
     import settings
     import server
