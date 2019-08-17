@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('ui_static.static', filename='css/table.css') }}">
+    <link rel="stylesheet" href="{{ url_for('ui_static.static', filename='css/table.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -17,11 +17,11 @@
                     <div class="table-row" style="grid-template-columns: repeat({{ headers|length }}, 1fr)">
                         {% for header in headers %}
                             <div class="table-cell">
-                            {% if loop.index == 1 and link %}
-                                <a href="{{ url_for(link, key=row.id) }}">{{ row[header] }}</a>
-                            {% else %}
-                                {{ row[header] }}
-                            {% endif %}
+                                {% if loop.index == 1 and link %}
+                                    <a href="{{ url_for(link, key=row.id) }}">{{ row[header] }}</a>
+                                {% else %}
+                                    {{ row[header] }}
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
