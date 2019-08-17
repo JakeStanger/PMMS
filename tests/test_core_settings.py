@@ -23,6 +23,11 @@ def test_register_key():
     assert settings.get_key('test.default') == 'Hello World'
 
 
+def test_register_existing_key():
+    settings.register_key('test.key', 'Something Different')
+    assert settings.get_key('test.key') == 'Hello World'
+
+
 def test_database_key():
     database = settings.get_key('database')
     assert database is not None
