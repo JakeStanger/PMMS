@@ -1,0 +1,35 @@
+.container {
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.12);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+}
+.container .form-section {
+  margin-bottom: 5px;
+}
+.container .form-section .form-label {
+  display: block;
+}
+.container .form-section .form-input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.container .submit-btn {
+  background-color: #38A0E1;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.container .submit-btn:hover {
+  opacity: 0.9;
+}
+
+/*# sourceMappingURL=login.css.map */

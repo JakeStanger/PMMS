@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+}
+
+.vertical-centre {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header {
+  background-color: #eee;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.header .left {
+  display: flex;
+}
+.header .left .title {
+  margin-right: 20px;
+  font-size: 1.4rem;
+}
+.header .left .title > a {
+  color: #666;
+  text-decoration: none;
+}
+.header .links {
+  font-size: 1rem;
+}
+.header .links > a {
+  color: #444;
+  text-decoration: none;
+  padding: 5px;
+}
+
+/*# sourceMappingURL=layout.css.map */

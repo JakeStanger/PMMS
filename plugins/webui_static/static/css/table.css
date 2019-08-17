@@ -1,0 +1,27 @@
+.container {
+  padding: 20px;
+}
+.container .table .table-header {
+  display: grid;
+  background-color: #eee;
+}
+.container .table .table-header .table-cell {
+  padding: 10px;
+  font-size: 1.1rem;
+}
+.container .table .table-body .table-row {
+  display: grid;
+}
+.container .table .table-body .table-row:nth-child(2n) {
+  background-color: #eee;
+}
+.container .table .table-body .table-row .table-cell {
+  padding: 10px;
+}
+.container .table .table-body .table-row .table-cell > a {
+  color: #3f3f57;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=table.css.map */
