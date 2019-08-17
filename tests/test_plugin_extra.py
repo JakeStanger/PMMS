@@ -11,6 +11,8 @@ def test_app_start():
     settings.__start__()
     database.__start__()
 
+    settings.set_key('plugins.base_extra', {})
+
     plugin_loader.__start__()
 
 
