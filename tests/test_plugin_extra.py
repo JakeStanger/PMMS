@@ -32,8 +32,8 @@ def test_local_album_art():
     with server.app.test_client() as c:
         rv = c.get('/api/albums/%s/art' % album.id, headers={'Authorization': api_key})
         assert rv.status_code == 200
-        assert rv.content is not None
-        assert mimetypes.guess_type(rv.content) == 'image/jpeg'
+        assert rv.data is not None
+        assert mimetypes.guess_type(rv.data) == 'image/jpeg'
 
 
 def test_lyrics_cache():
