@@ -9,10 +9,12 @@ def init():
     import settings
     import os
 
-    settings.register_key('plugins.base.movies.enable', True)
-    settings.register_key('plugins.base.movies.path', os.path.expanduser('~/Movies'))
+    settings_set = settings.SettingsSet('plugins.base.movies')
 
-    if settings.get_key('plugins.base.movies.enable'):
+    settings_set.register_key('enable', True)
+    settings_set.register_key('path', os.path.expanduser('~/Movies'))
+
+    if settings_set.get_key('enable'):
         plugin_loader.add_api_endpoints(Movie, ['GET'], auth_func=auth_request)
 
         watch_movies()

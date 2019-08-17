@@ -6,22 +6,24 @@ def init():
     import settings
     import server
     import database
+    
+    settings_set = settings.SettingsSet('plugins.base_extra.music.lyrics')
 
-    settings.register_key('plugins.base_extra.music.lyrics.enable', True)
+    settings_set.register_key('enable', True)
 
-    settings.register_key('plugins.base_extra.music.lyrics.cache.enable', True)
-    settings.register_key('plugins.base_extra.music.lyrics.cache.path', '~/.cache/pmms/lyrics')
+    settings_set.register_key('cache.enable', True)
+    settings_set.register_key('cache.path', '~/.cache/pmms/lyrics')
 
-    settings.register_key('plugins.base_extra.music.lyrics.genius.enable', False)
-    settings.register_key('plugins.base_extra.music.lyrics.genius.api_key', '')
+    settings_set.register_key('genius.enable', False)
+    settings_set.register_key('genius.api_key', '')
 
-    if settings.get_key('plugins.base_extra.music.lyrics.enable'):
+    if settings_set.get_key('enable'):
         from plugins.base.music.models import Track
         from .genius import fetch_genius_lyrics
         import os
 
         def load_cache(track: Track):
-            cache_path = os.path.expanduser(settings.get_key('plugins.base_extra.music.lyrics.cache.path'))
+            cache_path = os.path.expanduser(settings_set.get_key('cache.path'))
             full_path = os.path.join(cache_path,  '%s - %s.txt' % (track.artist.name, track.name))
 
             if os.path.isfile(full_path):
@@ -29,7 +31,7 @@ def init():
                     return f.read()
 
         def write_cache(lyrics: str, track: Track):
-            cache_path = os.path.expanduser(settings.get_key('plugins.base_extra.music.lyrics.cache.path'))
+            cache_path = os.path.expanduser(settings_set.get_key('cache.path'))
             full_path = os.path.join(cache_path, '%s - %s.txt' % (track.artist.name, track.name))
 
             if not os.path.isdir(cache_path):
@@ -47,7 +49,7 @@ def init():
                 return jsonify({'message': 'Track does not exist'}), 404
 
             lyrics = None
-            enable_cache = settings.get_key('plugins.base_extra.music.lyrics.cache.enable')
+            enable_cache = settings_set.get_key('cache.enable')
 
             if enable_cache:
                 lyrics = load_cache(track)
@@ -56,7 +58,7 @@ def init():
             if lyrics:
                 do_cache = False
 
-            if not lyrics and settings.get_key('plugins.base_extra.music.lyrics.genius.enable'):
+            if not lyrics and settings_set.get_key('genius.enable'):
                 lyrics = fetch_genius_lyrics(track)
 
             if lyrics:

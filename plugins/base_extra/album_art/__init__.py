@@ -12,32 +12,34 @@ def init():
     import settings
     import server
     import database
+    
+    settings_set = settings.SettingsSet('plugins.base_extra.music.album_art')
 
-    settings.register_key('plugins.base_extra.music.album_art.enable', True)
-    settings.register_key('plugins.base_extra.music.album_art.local.enable', True)
+    settings_set.register_key('enable', True)
+    settings_set.register_key('local.enable', True)
 
-    settings.register_key('plugins.base_extra.music.album_art.lastfm.enable', False)
-    settings.register_key('plugins.base_extra.music.album_art.lastfm.api_key', '')
+    settings_set.register_key('lastfm.enable', False)
+    settings_set.register_key('lastfm.api_key', '')
 
-    settings.register_key('plugins.base_extra.music.album_art.musicbrainz.enable', False)
+    settings_set.register_key('musicbrainz.enable', False)
 
-    settings.register_key('plugins.base_extra.music.album_art.cache.enable', True)
-    settings.register_key('plugins.base_extra.music.album_art.cache.path', '~/.cache/pmms/albumart')
+    settings_set.register_key('cache.enable', True)
+    settings_set.register_key('cache.path', '~/.cache/pmms/albumart')
 
-    if settings.get_key('plugins.base_extra.music.album_art.enable'):
+    if settings_set.get_key('enable'):
         from plugins.base.music.models import Album
         from flask import send_file
         import os
 
         def load_cache(album: Album):
-            cache_path = os.path.expanduser(settings.get_key('plugins.base_extra.music.album_art.cache.path'))
+            cache_path = os.path.expanduser(settings_set.get_key('cache.path'))
             full_path = os.path.join(cache_path,  '%s - %s.jpg' % (album.artist.name, album.name))
             if os.path.isfile(full_path):
                 with open(full_path, 'rb') as f:
                     return BytesIO(f.read())
 
         def write_cache(art: BytesIO, album: Album):
-            cache_path = os.path.expanduser(settings.get_key('plugins.base_extra.music.album_art.cache.path'))
+            cache_path = os.path.expanduser(settings_set.get_key('cache.path'))
             if not os.path.isdir(cache_path):
                 os.makedirs(cache_path)
 
@@ -54,7 +56,7 @@ def init():
 
             art = None
 
-            enable_cache = settings.get_key('plugins.base_extra.music.album_art.cache.enable')
+            enable_cache = settings_set.get_key('cache.enable')
 
             if enable_cache:
                 art = load_cache(album)
@@ -63,11 +65,11 @@ def init():
             if art:
                 do_cache = False
 
-            if not art and settings.get_key('plugins.base_extra.music.album_art.local.enable'):
+            if not art and settings_set.get_key('local.enable'):
                 art = fetch_local_art(album)
-            if not art and settings.get_key('plugins.base_extra.music.album_art.musicbrainz.enable'):
+            if not art and settings_set.get_key('musicbrainz.enable'):
                 art = fetch_musicbrainz_art(album)
-            if not art and settings.get_key('plugins.base_extra.music.album_art.lastfm.enable'):
+            if not art and settings_set.get_key('lastfm.enable'):
                 art = fetch_lastfm_art(album)
 
             if art:
@@ -80,6 +82,6 @@ def init():
             else:
                 return jsonify({'message': 'Failed to find art'}), 404
 
-        if settings.get_key('plugins.base_extra.music.album_art.musicbrainz.enable'):
+        if settings_set.get_key('musicbrainz.enable'):
             import musicbrainzngs as mb
             mb.set_useragent('pmms', '1.0.0')

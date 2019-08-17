@@ -9,6 +9,25 @@ settings = {}
 logger: logging.Logger
 
 
+class SettingsSet:
+    base_path: str
+
+    def __init__(self, base_path: str):
+        self.base_path = base_path
+
+    def get_full_path(self, path: str):
+        return '%s.%s' % (self.base_path, path)
+
+    def get_key(self, path: str):
+        return get_key(self.get_full_path(path))
+
+    def set_key(self, path: str, value):
+        set_key(self.get_full_path(path), value)
+
+    def register_key(self, path, default):
+        register_key(self.get_full_path(path), default)
+
+
 def register_key(path: str, default):
     logger.debug('Registering default value for \'%s\'' % path)
     if get_key(path) is None:

@@ -9,10 +9,12 @@ def init():
     import settings
     import os
 
-    settings.register_key('plugins.base.music.enable', True)
-    settings.register_key('plugins.base.music.path', os.path.expanduser('~/Music'))
+    settings_set = settings.SettingsSet('plugins.base.music')
 
-    if settings.get_key('plugins.base.music.enable'):
+    settings_set.register_key('enable', True)
+    settings_set.register_key('path', os.path.expanduser('~/Music'))
+
+    if settings_set.get_key('enable'):
         plugin_loader.add_api_endpoints(Artist, ['GET'], exclude=['tracks', 'albums'], auth_func=auth_request)
         plugin_loader.add_api_endpoints(Album, ['GET'], exclude=['tracks'], auth_func=auth_request)
         plugin_loader.add_api_endpoints(Track, ['GET'], exclude=['playlists'], auth_func=auth_request)
