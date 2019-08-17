@@ -1,9 +1,10 @@
 import logging
+from typing import Union
 
 import helpers
 import plugin_loader
-from flask import request, jsonify
-from flask_login import LoginManager, login_user, login_required, current_user
+from flask import request, jsonify, redirect
+from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from database import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -21,8 +22,11 @@ users = plugin_loader.create_blueprint('users', '/users', 'plugins.base')
 
 
 @login_manager.user_loader
-def load_user_from_username(username: str):
-    user = db.session.query(User).filter(db.and_(User.username == username, User.is_deleted == False)).first()
+def load_user_from_username_or_id(username: Union[str, int]):
+    if not username.isdigit():
+        user = db.session.query(User).filter(db.and_(User.username == username, User.is_deleted == False)).first()
+    else:
+        user = db.session.query(User).filter(db.and_(User.id == username, User.is_deleted == False)).first()
     return user
 
 
@@ -52,11 +56,16 @@ def login():
     username = credentials['username']
     password = credentials['password']
 
-    user = load_user_from_username(username)
+    user = load_user_from_username_or_id(username)
 
     if user:
         if check_password_hash(user.password, password):
             login_user(user, True)
+
+            if 'text/html' in request.accept_mimetypes:
+                next = request.args.get('next')
+                return redirect(next or '/')
+
             return jsonify({'username': user.username, 'api_key': user.api_key}), 202
         else:
             return jsonify({'message': 'Invalid password'}), 401
@@ -70,7 +79,7 @@ def create_user():
     username = credentials['username']
     password = credentials['password']
 
-    user_exists = load_user_from_username(username) is not None
+    user_exists = load_user_from_username_or_id(username) is not None
     if user_exists:
         return jsonify({'message': 'User already exists'}), 400
 
@@ -83,7 +92,11 @@ def create_user():
     return jsonify({'message': 'User created'}), 201
 
 
-@users.route('/secure')
-@login_required
-def secure():
-    return current_user.username
+@users.route('/logout')
+def logout():
+    logout_user()
+
+    if 'text/html' in request.accept_mimetypes:
+        return redirect('/')
+
+    return jsonify({'message': 'Logged out'}), 200
