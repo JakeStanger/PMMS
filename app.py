@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 if __name__ == '__main__':
     logger.info('Starting services')
 
-    server.__start__()
     settings.__start__()
+    server.__start__()
     database.__start__()
 
     plugin_loader.__start__()
