@@ -19,6 +19,8 @@ before_script:
   - 'mv PMMS-Testing-Media-master/Music ~'
   - 'mv PMMS-Testing-Media-master/Movies ~'
   - 'mv PMMS-Testing-Media-master/Television ~'
+  - 'mkdir -p ~/.cache/pmms'
+  - 'mv PMMS-Testing-Media-master/Lyrics ~/.cache/pmms/lyrics'
 
 script:
   - pytest -v --cov-report term --cov=./
