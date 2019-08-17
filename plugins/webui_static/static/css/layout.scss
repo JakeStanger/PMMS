@@ -1,0 +1,46 @@
+$color-lightGrey: #eee;
+$color-darkGrey: #444;
+$color-grey: #666;
+
+body {
+  margin: 0;
+}
+
+.vertical-centre {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header {
+  background-color: $color-lightGrey;
+  padding: 15px;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: space-between;
+
+  .left {
+    display: flex;
+
+    .title {
+      margin-right: 20px;
+      font-size: 1.4rem;
+
+      > a {
+        color: $color-grey;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .links {
+      font-size: 1.00rem;
+
+      > a {
+        color: $color-darkGrey;
+        text-decoration: none;
+        padding: 5px;
+      }
+    }
+}

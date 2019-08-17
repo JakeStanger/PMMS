@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('ui_static.static', filename='css/table.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="table">
+            <div class="table-header" style="grid-template-columns: repeat({{ headers|length }}, 1fr)">
+                {% for header in headers %}
+                    <div class="table-cell">{{ header|title }}</div>
+                {% endfor %}
+            </div>
+            <div class="table-body">
+                {% for row in data %}
+                    <div class="table-row" style="grid-template-columns: repeat({{ headers|length }}, 1fr)">
+                        {% for header in headers %}
+                            <div class="table-cell">
+                            {% if loop.index == 1 and link %}
+                                <a href="{{ url_for(link, key=row.id) }}">{{ row[header] }}</a>
+                            {% else %}
+                                {{ row[header] }}
+                            {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
