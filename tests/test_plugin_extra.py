@@ -3,7 +3,6 @@ import database
 import settings
 import plugin_loader
 from plugins.base.music.models import Album, Track
-import mimetypes
 
 
 def test_app_start():
@@ -33,7 +32,7 @@ def test_local_album_art():
         rv = c.get('/api/albums/%s/art' % album.id, headers={'Authorization': api_key})
         assert rv.status_code == 200
         assert rv.data is not None
-        assert mimetypes.guess_type(rv.data) == 'image/jpeg'
+        assert type(rv.data[0]) == int  # Check binary string
 
 
 def test_lyrics_cache():
