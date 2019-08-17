@@ -37,7 +37,7 @@ class Album(db.Model):
     artist = db.relationship('Artist', backref='albums', foreign_keys=[artist_key])
     album_artist = db.relationship('Artist', foreign_keys=[album_artist_key])
 
-    tracks: list = db.relationship('Track', back_populates='album', lazy='dynamic')
+    tracks: list = db.relationship('Track', back_populates='album')
     genres: list = db.relationship('Genre', secondary=album_genre, back_populates='albums')
 
     def __repr__(self):
@@ -50,7 +50,7 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
 
-    albums = db.relationship('Album', secondary=album_genre, back_populates='genres')
+    albums: list = db.relationship('Album', secondary=album_genre, back_populates='genres')
 
     def __repr__(self):
         return "<Genre:%d - %s>" % (self.id, self.name)
