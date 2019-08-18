@@ -1,6 +1,6 @@
 import time
 
-from flask import render_template, redirect, url_for
+from flask import render_template
 from flask_login import login_required
 from plugins.webui_static.routes import ui
 import database
@@ -8,6 +8,7 @@ from plugins.base.movies.models import Movie
 
 
 @ui.route('/movies')
+@login_required
 def movies():
     movie_list = database.db.session.query(Movie).all()
 
