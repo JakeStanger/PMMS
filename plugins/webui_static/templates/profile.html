@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div>
+        {{ current_user.username }}
+    </div>
+    <div>
+        {{ current_user.api_key }}
+    </div>
+{% endblock %}
