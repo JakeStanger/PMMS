@@ -25,7 +25,11 @@
   padding: 10px;
 }
 .container .table .table-body .table-row .table-cell > a {
-  color: #3f3f57;
+  color: #007bff;
+  text-decoration: none;
+}
+.container .table .table-body .table-row .table-cell > a:hover {
+  color: #0056b3;
 }
 
 /*# sourceMappingURL=table.css.map */

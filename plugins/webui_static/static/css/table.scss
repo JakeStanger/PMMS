@@ -31,9 +31,13 @@
           padding: 10px;
 
           >a {
-            color: #3f3f57;
+            color: #007bff;
+
+            &:hover {
+              color: #0056b3;
+            }
             // font-weight: 400;
-            // text-decoration: none;
+             text-decoration: none;
           }
         }
       }
