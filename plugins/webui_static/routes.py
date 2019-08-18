@@ -1,3 +1,5 @@
+from flask_login import login_required
+
 import plugin_loader
 import server
 from flask import render_template, redirect, url_for
@@ -26,5 +28,6 @@ def login():
 
 
 @ui.route('/profile')
+@login_required
 def profile():
     return render_template('profile.html', title='Profile')

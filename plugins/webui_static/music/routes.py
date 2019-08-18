@@ -34,6 +34,7 @@ def artists():
 
 
 @ui.route('/music/artists/<int:key>')
+@login_required
 def albums(key: int):
     album_list = database.db.session.query(Album).filter(Album.artist.has(id=key)).all()
 
@@ -53,6 +54,7 @@ def albums(key: int):
 
 
 @ui.route('/music/albums/<int:key>')
+@login_required
 def tracks(key: int):
     track_list = database.db.session.query(Track).filter(Track.album.has(id=key)).all()
 
