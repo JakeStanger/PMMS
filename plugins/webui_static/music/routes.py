@@ -54,16 +54,20 @@ def tracks(key: int):
     render_data = [{
         'name': track.name,
         'duration': time.strftime('%M:%S', time.gmtime(track.duration)),
-        'track_num': track.track_num if type(track.track_num) == int else int(track.track_num.split('/')[0]) if track.track_num else 0,
-        'disc_num': track.disc_num if type(track.disc_num) == int else int(track.disc_num.split('/')[0]) if track.disc_num else 1,
-        'disc_name': track.disc_name
+        'track num': track.track_num
+        if type(track.track_num) == int else int(track.track_num.split('/')[0]) if track.track_num else 0,
+        'disc num': track.disc_num
+        if type(track.disc_num) == int else int(track.disc_num.split('/')[0]) if track.disc_num else 1,
+        'disc name': '%s / %s' % (track.disc_num, track.disc_name) if track.disc_name else 'Disc %s' % track.disc_num
     }
         for track in track_list]
 
-    render_data.sort(key=lambda track: (track['disc_num'], track['track_num']))
+    render_data.sort(key=lambda track: (track['disc num'], track['track num']))
 
     return render_template('table.html',
-                           headers=['name', 'duration', 'track_num', 'disc_num'],
+                           headers=[{'name': 'track num', 'width': '0.2fr'},
+                                    {'name': 'name', 'width': '1.5fr'},
+                                    'duration'],
                            data=render_data,
+                           group='disc name',
                            title='Tracks')
-

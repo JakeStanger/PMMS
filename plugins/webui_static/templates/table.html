@@ -7,20 +7,33 @@
 {% block content %}
     <div class="container">
         <div class="table">
-            <div class="table-header" style="grid-template-columns: repeat({{ headers|length }}, 1fr)">
+            <div class="table-header" style="grid-template-columns: {% for header in headers %}{{ header.width or '1fr' }} {% endfor %}">
                 {% for header in headers %}
-                    <div class="table-cell">{{ header|title }}</div>
+                    <div class="table-cell">{{ header.name|title if header.name else header|title }}</div>
                 {% endfor %}
             </div>
             <div class="table-body">
+                {% if group %}
+                    {% set last = data|last %}
+                    {% set first = data|first %}
+                    {% if first and first[group] != last[group] %}
+                        {% set groups = [first[group]] %}
+                    {% endif %}
+                {% endif %}
                 {% for row in data %}
-                    <div class="table-row" style="grid-template-columns: repeat({{ headers|length }}, 1fr)">
+                    {% if group and groups and (row[group] != groups|last or row == first) %}
+                        <div class="table-group">
+                            {{ row[group] }}
+                        </div>
+                        {% if groups.append(row[group]) %}{% endif %}
+                    {% endif %}
+                    <div class="table-row" style="grid-template-columns: {% for header in headers %}{{ header.width or '1fr' }} {% endfor %}">
                         {% for header in headers %}
                             <div class="table-cell">
                                 {% if loop.index == 1 and link %}
-                                    <a href="{{ url_for(link, key=row.id) }}">{{ row[header] }}</a>
+                                    <a href="{{ url_for(link, key=row.id) }}">{{ row[header.name] if header.name else row[header] }}</a>
                                 {% else %}
-                                    {{ row[header] }}
+                                    {{ row[header.name] if header.name else row[header] }}
                                 {% endif %}
                             </div>
                         {% endfor %}

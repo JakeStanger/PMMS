@@ -13,6 +13,13 @@
     }
 
     .table-body {
+      .table-group {
+        font-size: 1.1rem;
+        padding: 15px 10px 10px;
+        border-top: 1px solid #ddd;
+        background-color: #38A0E122;
+      }
+
       .table-row {
         display: grid;
 
@@ -25,8 +32,8 @@
 
           >a {
             color: #3f3f57;
-            font-weight: 400;
-            text-decoration: none;
+            // font-weight: 400;
+            // text-decoration: none;
           }
         }
       }

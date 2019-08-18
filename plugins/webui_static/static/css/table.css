@@ -9,6 +9,12 @@
   padding: 10px;
   font-size: 1.1rem;
 }
+.container .table .table-body .table-group {
+  font-size: 1.1rem;
+  padding: 15px 10px 10px;
+  border-top: 1px solid #ddd;
+  background-color: #38A0E122;
+}
 .container .table .table-body .table-row {
   display: grid;
 }
@@ -20,8 +26,6 @@
 }
 .container .table .table-body .table-row .table-cell > a {
   color: #3f3f57;
-  font-weight: 400;
-  text-decoration: none;
 }
 
 /*# sourceMappingURL=table.css.map */
