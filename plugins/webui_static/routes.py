@@ -23,3 +23,8 @@ def index():
 @ui.route('/login')
 def login():
     return render_template('login.html', title='Login')
+
+
+@ui.route('/profile')
+def profile():
+    return render_template('profile.html', title='Profile')

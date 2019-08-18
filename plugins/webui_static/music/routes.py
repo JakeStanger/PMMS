@@ -1,12 +1,17 @@
 import datetime
 import time
 
-from flask import render_template
+from flask import render_template, redirect, url_for
 from flask_login import login_required
 
 from plugins.webui_static.routes import ui
 from plugins.base.music.models import Artist, Album, Track
 import database
+
+
+@ui.route('/music')
+def music_index():
+    return redirect(url_for('ui_static.artists'))
 
 
 @ui.route('/music/artists')
