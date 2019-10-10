@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }} | PMMS</title>
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    {% if image %}<meta property="og:image" content="{{ image }}">{% endif %}
+{#    <meta property="og:url" content="{{  }}">#}
     <link rel="stylesheet" href="{{ url_for('ui_static.static', filename='css/layout.css') }}">
     {% block head %}{% endblock %}
 </head>
