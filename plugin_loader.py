@@ -10,6 +10,13 @@ from flask import Blueprint
 
 logger: logging.Logger
 
+_loaded_modules: List[str] = []
+
+
+def is_module_loaded(module: str):
+    global _loaded_modules
+    return module in _loaded_modules
+
 
 def create_blueprint(bp_name: str, url_prefix: str, module_name: str,
                      template_folder: str = None, static_folder: str = None) -> Blueprint:
@@ -88,12 +95,16 @@ def add_api_endpoints(model, methods: List[str],
 
 
 def _load_modules():
+    global _loaded_modules
+
     modules = settings.get_key('plugins')
     for module in modules:
         plugin = importlib.import_module('plugins.%s' % module)
 
         # Every plugin should have an init entry point
         plugin.init()
+
+        _loaded_modules.append(module)
 
         if hasattr(sys.modules[plugin.__name__], '__blueprints__'):
             for bp in plugin.__blueprints__:
