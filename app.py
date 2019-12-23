@@ -8,8 +8,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-
-if __name__ == '__main__':
+def run():
     logger.info('Starting services')
 
     settings.__start__()
@@ -21,3 +20,6 @@ if __name__ == '__main__':
     # These should always be the last things to init, in this order
     database.__create_all__()
     server.__run__()
+
+if __name__ == '__main__':
+    run()

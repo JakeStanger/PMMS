@@ -17,3 +17,6 @@ lyricsgenius
 
 python-mpd2
 fuzzywuzzy
+
+mysqlclient
+uwsgi
