@@ -14,3 +14,5 @@ watchdog
 pylast
 musicbrainzngs
 lyricsgenius
+
+python-mpd2
