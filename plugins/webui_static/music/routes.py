@@ -2,14 +2,13 @@ import datetime
 import time
 from typing import Optional
 
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from flask_login import login_required
 
 from plugins.webui_static.routes import ui
 from plugins.base.music.models import Artist, Album, Track
 import database
 import plugin_loader
-import settings
 
 
 @ui.route('/music')
@@ -18,7 +17,7 @@ def music_index():
 
 
 @ui.route('/music/artists')
-@login_required
+# @login_required
 def artists():
     artist_list = database.db.session.query(Artist).all()
 
@@ -39,7 +38,7 @@ def artists():
 
 
 @ui.route('/music/artists/<int:key>')
-@login_required
+# @login_required
 def albums(key: int):
     album_list = database.db.session.query(Album).filter(Album.artist.has(id=key)).all()
 
@@ -63,7 +62,7 @@ def albums(key: int):
 
 
 @ui.route('/music/albums/<int:key>')
-@login_required
+# @login_required
 def tracks(key: int):
     track_list = database.db.session.query(Track).filter(Track.album.has(id=key)).all()
 
@@ -85,7 +84,7 @@ def tracks(key: int):
 
     image_url: Optional[str] = None
     if plugin_loader.is_module_loaded('base_extra'):
-        image_url = url_for('get_album_art', album_id=key, _external=True)
+        image_url = request.url_root + url_for('get_album_art', album_id=key)
 
     return render_template('table.html',
                            headers=[{'name': 'track num', 'width': '0.2fr'},
