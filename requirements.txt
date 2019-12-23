@@ -16,3 +16,4 @@ musicbrainzngs
 lyricsgenius
 
 python-mpd2
+fuzzywuzzy
