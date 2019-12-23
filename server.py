@@ -9,7 +9,7 @@ logger: logging.Logger
 def __run__():
     logger.debug('Starting Flask server.')
 
-    app.run()
+    app.run(host='0.0.0.0')
 
 
 def __start__():
