@@ -61,25 +61,25 @@ def import_tv():
             if not len(tracks):
                 continue
 
-            for track in tracks:
-                show = get_show(show_name)
-                season = get_season('Season %s' % season_num, season_num, show)
+            track = tracks[0]
+            show = get_show(show_name)
+            season = get_season('Season %s' % season_num, season_num, show)
 
-                episode = Episode(
-                    name=episode_name,
-                    name_sort=get_name_sort(episode_name),
-                    number=episode_num,
-                    path=relative_path,
-                    duration=track.duration,
-                    size=os.path.getsize(full_path),
-                    format=track.format,
-                    width=track.width,
-                    height=track.height,
-                    show=show,
-                    season=season
-                )
+            episode = Episode(
+                name=episode_name,
+                name_sort=get_name_sort(episode_name),
+                number=episode_num,
+                path=relative_path,
+                duration=track.duration,
+                size=os.path.getsize(full_path),
+                format=track.format,
+                width=track.width,
+                height=track.height,
+                show=show,
+                season=season
+            )
 
-                database.db.session.add(episode)
+            database.db.session.add(episode)
 
     database.db.session.commit()
 
