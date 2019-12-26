@@ -99,11 +99,17 @@ def get_duration(tags: File):
 
 
 def get_track_num(tags: File):
-    return get_tag(tags, ['TRCK', 'tracknumber', 'trkn'])
+    track_num = get_tag(tags, ['TRCK', 'tracknumber', 'trkn'])
+    if '/' in track_num:
+        return track_num.split('/')[0]
+    return track_num
 
 
 def get_disc_num(tags: File):
-    return get_tag(tags, ['TXXX:CDNUMBER', 'discnumber', 'disk'])
+    disc_num = get_tag(tags, ['TXXX:CDNUMBER', 'discnumber', 'disk'])
+    if '/' in disc_num:
+        return disc_num.split('/')[0]
+    return disc_num
 
 
 def get_disc_name(tags: File):
