@@ -3,32 +3,18 @@
 [![Build Status](https://travis-ci.com/JakeStanger/PMMS.svg?branch=master)](https://travis-ci.com/JakeStanger/PMMS)
 [![Coverage Status](https://coveralls.io/repos/github/JakeStanger/PMMS/badge.svg?branch=master)](https://coveralls.io/github/JakeStanger/PMMS?branch=master)
 
-## Reasoning
+A modular plugin-based media server written in Python. PMMS includes:
 
-Being able to easily publically access your own media shouldn't be a lot to ask for. Plex comes close to my own needs, but the API is poorly documented, the mobile app is far from great, and I'd rather have something open if at all possible. 
+- Support for a large variety of database engines including SQLite.
+- A powerful low-level plugin system for creating and modifying routes, blueprints, and tables.
+- Automatic REST endpoint generation for models.
+- A number out plugins out of the box, supporting music, movies and television with a REST API and web interface.
 
-My original project, [Plex Music Viewer](https://github.com/JakeStanger/Plex-Music-Viewer), was okay. I personally use it, but I'd imagine the code was pretty hard to follow for anybody else. The API endpoints were a mess. Adding new features began to feel like patching them in rather than developing. 
+## Included Plugins
 
-Rather than trying to modify that project to be what I want, I've decided to start again, and learn from my mistakes. This time I have a plan of attack. Of course the more useful lumps of code will be ported across.
-
-## About
-
-The Python Modular Media Server, or PMMS, as it is currently known, aims to be a fully modular, fully hackable web server. It aims to offer a plugin system which will allow users to add in their own functionality, and modify existing.
-
-Out of the box I plan to include the following functionality:
-
-- API endpoints and database tables for music, movies and television
-- Constructing the database from disc, and filewatching to automatically update the database.
-- Constructing the database from Plex, and using the events websocket server to sync changes
-- Constructing the database from MPD
-- Endpoints secured by username/password login where appropriate
-- Getting album art from disc, LastFM, MusicBrainz, and Plex.
-- Getting lyrics from LyricsGenius
-- A static UI, using Flask templates
-- A dynamic React UI, using the API
-
-A large chunk of the feature list already exists in PMV, so it's just a matter of porting it across.
-
-## External Requirements
-
-- mediainfo
+|  Plugin      |  Description                                               |
+|--------------|------------------------------------------------------------|
+| base         | API and database support for music, movies and television  |
+| base-extra   | Album art and lyrics support from a variety of providers   |
+| webui-static | Lightweight template-based web  interface                  |
+| mpd-webhooks | Webhooks for controlling MPD                               |
