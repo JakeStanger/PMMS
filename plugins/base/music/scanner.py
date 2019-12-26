@@ -104,7 +104,7 @@ def get_track_num(tags: File):
     if not track_num:
         return None
 
-    if '/' in track_num:
+    if type(track_num) == str and '/' in track_num:
         return track_num.split('/')[0]
     return track_num
 
@@ -115,7 +115,7 @@ def get_disc_num(tags: File):
     if not disc_num:
         return None
 
-    if '/' in disc_num:
+    if type(disc_num) == str and '/' in disc_num:
         return disc_num.split('/')[0]
     return disc_num
 
