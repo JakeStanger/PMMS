@@ -138,6 +138,8 @@ def get_release_date(tags: File):
 
     if re.match(r'^\d{4}$', date):
         return datetime.strptime(date, '%Y')
+    elif re.match(r'^\d{4}-\d{2}$', date):
+        return datetime.strptime(date, '%Y-%m')
     else:
         return datetime.strptime(date, '%Y-%m-%d')
 
