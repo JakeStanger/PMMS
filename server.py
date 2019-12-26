@@ -2,14 +2,8 @@ from flask import Flask
 import logging
 import settings
 
-app: Flask = Flask(__name__)
+app: Flask
 logger: logging.Logger
-
-
-def __run__():
-    logger.debug('Starting Flask server.')
-
-    app.run(host='0.0.0.0')
 
 
 def __start__():
