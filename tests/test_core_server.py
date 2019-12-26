@@ -1,11 +1,14 @@
-from flask import Blueprint
+from flask import Blueprint, Flask
 
 import server
 import settings
 import plugin_loader
 
+app = Flask(__name__)
+app.app_context().push()
+server.app = app
+
 settings.__start__()
-server.__start__()
 plugin_loader.__start__()
 
 

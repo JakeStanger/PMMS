@@ -1,10 +1,15 @@
+from flask import Flask
+
 import server
 import database
 import settings
 import plugin_loader
 
+app = Flask(__name__)
+app.app_context().push()
+server.app = app
+
 settings.__start__()
-server.__start__()
 database.__start__()
 plugin_loader.__start__()
 
