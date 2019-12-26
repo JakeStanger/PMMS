@@ -4,3 +4,5 @@ venv
 settings.yml
 database.db
 .coverage
+
+*.map
