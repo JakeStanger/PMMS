@@ -6,6 +6,7 @@ flask
 flask_sqlalchemy
 flask-login
 flask-restless-continued
+flask-script
 pyyaml
 mutagen
 pymediainfo
