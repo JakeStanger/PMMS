@@ -4,7 +4,7 @@ from typing import Union
 import helpers
 import plugin_loader
 from flask import request, jsonify, redirect
-from flask_login import LoginManager, login_user, login_required, current_user, logout_user
+from flask_login import LoginManager, login_user, logout_user
 from database import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
