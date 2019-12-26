@@ -8,6 +8,8 @@ import settings
 import server
 import logging
 
+# import plugin_loader
+
 db: SQLAlchemy = SQLAlchemy()
 api_manager: APIManager
 
