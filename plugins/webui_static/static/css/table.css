@@ -1,34 +1,31 @@
-.container {
-  padding: 20px;
-}
-.container .table .table-header {
+.table .table-header {
   display: grid;
   background-color: #eee;
 }
-.container .table .table-header .table-cell {
+.table .table-header .table-cell {
   padding: 10px;
   font-size: 1.1rem;
 }
-.container .table .table-body .table-group {
+.table .table-body .table-group {
   font-size: 1.1rem;
   padding: 15px 10px 10px;
   border-top: 1px solid #ddd;
   background-color: #38A0E122;
 }
-.container .table .table-body .table-row {
+.table .table-body .table-row {
   display: grid;
 }
-.container .table .table-body .table-row:nth-child(2n) {
+.table .table-body .table-row:nth-child(2n) {
   background-color: #eee;
 }
-.container .table .table-body .table-row .table-cell {
+.table .table-body .table-row .table-cell {
   padding: 10px;
 }
-.container .table .table-body .table-row .table-cell > a {
+.table .table-body .table-row .table-cell > a {
   color: #007bff;
   text-decoration: none;
 }
-.container .table .table-body .table-row .table-cell > a:hover {
+.table .table-body .table-row .table-cell > a:hover {
   color: #0056b3;
 }
 

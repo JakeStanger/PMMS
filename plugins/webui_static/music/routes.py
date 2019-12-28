@@ -3,12 +3,11 @@ import time
 from typing import Optional
 
 from flask import render_template, redirect, url_for, request
-from flask_login import login_required
 
-from plugins.webui_static.routes import ui
-from plugins.base.music.models import Artist, Album, Track
 import database
 import plugin_loader
+from plugins.base.music.models import Artist, Album, Track
+from plugins.webui_static.routes import ui
 
 
 @ui.route('/music')
@@ -69,11 +68,10 @@ def tracks(key: int):
     render_data = [{
         'name': track.name,
         'duration': time.strftime('%M:%S', time.gmtime(track.duration)),
-        'track num': track.track_num
-        if type(track.track_num) == int else int(track.track_num.split('/')[0]) if track.track_num else 0,
-        'disc num': track.disc_num
-        if type(track.disc_num) == int else int(track.disc_num.split('/')[0]) if track.disc_num else 1,
-        'disc name': '%s / %s' % (track.disc_num, track.disc_name) if track.disc_name else 'Disc %s' % track.disc_num
+        'track num': track.track_num if track.track_num else 0,
+        'disc num': track.disc_num if track.disc_num else 1,
+        'disc name': '%s / %s' % (track.disc_num, track.disc_name) if track.disc_name else 'Disc %s' % track.disc_num,
+        'id': track.id
     }
         for track in track_list]
 
@@ -84,7 +82,7 @@ def tracks(key: int):
 
     image_url: Optional[str] = None
     if plugin_loader.is_module_loaded('base_extra'):
-        image_url = request.url_root + url_for('get_album_art', album_id=key)
+        image_url = request.url_root[:-1] + url_for('get_album_art', album_id=key)
 
     return render_template('table.html',
                            headers=[{'name': 'track num', 'width': '0.2fr'},
@@ -94,4 +92,25 @@ def tracks(key: int):
                            group='disc name',
                            title=album_name,
                            description='Tracks from %s by %s' % (album_name, artist_name),
+                           image=image_url,
+                           link='ui_static.track')
+
+
+@ui.route('/music/tracks/<int:key>')
+def track(key: int):
+    track = database.db.session.query(Track).filter_by(id=key).one()
+
+    lyrics: Optional[str] = None
+    image_url: Optional[str] = None
+    if plugin_loader.is_module_loaded('base_extra'):
+        from plugins.base_extra.lyrics import get_lyrics
+
+        lyrics = get_lyrics(track.id)
+        image_url = request.url_root[:-1] + url_for('get_album_art', album_id=track.album.id)
+
+    return render_template('track.html',
+                           track=track,
+                           lyrics=lyrics,
+                           title=track.name,
+                           description='%s from %s by %s' % (track.name, track.album.name, track.artist.name),
                            image=image_url)

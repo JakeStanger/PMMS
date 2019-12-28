@@ -1,44 +1,42 @@
-.container {
-  padding: 20px;
 
-  .table {
-    .table-header {
+.table {
+  .table-header {
+    display: grid;
+    background-color: #eee;
+
+    .table-cell {
+      padding: 10px;
+      font-size: 1.1rem;
+    }
+  }
+
+  .table-body {
+    .table-group {
+      font-size: 1.1rem;
+      padding: 15px 10px 10px;
+      border-top: 1px solid #ddd;
+      background-color: #38A0E122;
+    }
+
+    .table-row {
       display: grid;
-      background-color: #eee;
+
+      &:nth-child(2n) {
+        background-color: #eee;
+      }
 
       .table-cell {
         padding: 10px;
-        font-size: 1.1rem;
-      }
-    }
 
-    .table-body {
-      .table-group {
-        font-size: 1.1rem;
-        padding: 15px 10px 10px;
-        border-top: 1px solid #ddd;
-        background-color: #38A0E122;
-      }
+        > a {
+          color: #007bff;
 
-      .table-row {
-        display: grid;
-
-        &:nth-child(2n) {
-          background-color: #eee;
-        }
-
-        .table-cell {
-          padding: 10px;
-
-          >a {
-            color: #007bff;
-
-            &:hover {
-              color: #0056b3;
-            }
-            // font-weight: 400;
-             text-decoration: none;
+          &:hover {
+            color: #0056b3;
           }
+
+          // font-weight: 400;
+          text-decoration: none;
         }
       }
     }

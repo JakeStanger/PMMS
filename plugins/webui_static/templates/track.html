@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('ui_static.static', filename='css/track.css') }}">
+    <link rel="stylesheet" href="{{ url_for('ui_static.static', filename='css/table.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-top">
+        <div class="container-main">
+            <h1>{{ track.name }}</h1>
+            {% if lyrics %}
+                <h2>Lyrics</h2>
+                {% for line in lyrics.split('\n') %}
+                    <div class="lyric {% if line.startswith('[') and line.endswith(']') %}caption{% endif %}">{{ line }}</div>
+                {% endfor %}
+                </section>
+            {% endif %}
+        </div>
+
+        <section class="container-art">
+            <img src="{{ image }}" alt="{{ track.album.name }} album art">
+        </section>
+    </div>
+    <section>
+        <h2>Information</h2>
+        <div class="table">
+            <div class="table-header"
+                 style="grid-template-columns: 1fr 1fr">
+                <div class="table-cell">Name</div>
+                <div class="table-cell">Value</div>
+            </div>
+            <div class="table-body">
+
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Duration
+                    </div>
+                    <div class="table-cell">
+                        {{ track.duration }}
+                    </div>
+                </div>
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Track Number
+                    </div>
+                    <div class="table-cell">
+                        {{ track.track_num }}
+                    </div>
+                </div>
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Disc Number
+                    </div>
+                    <div class="table-cell">
+                        {{ track.disc_num }}
+                    </div>
+                </div>
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Disc Name
+                    </div>
+                    <div class="table-cell">
+                        {{ track.disc_name }}
+                    </div>
+                </div>
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Path
+                    </div>
+                    <div class="table-cell">
+                        {{ track.path }}
+                    </div>
+                </div>
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Size
+                    </div>
+                    <div class="table-cell">
+                        {{ track.size }}
+                    </div>
+                </div>
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Bitrate
+                    </div>
+                    <div class="table-cell">
+                        {{ track.bitrate }}
+                    </div>
+                </div>
+                <div class="table-row"
+                     style="grid-template-columns: 1fr 1fr">
+                    <div class="table-cell">
+                        Format
+                    </div>
+                    <div class="table-cell">
+                        {{ track.format }}
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock %}

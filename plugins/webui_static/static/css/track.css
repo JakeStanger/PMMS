@@ -1,0 +1,24 @@
+.container-top {
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+.container-top .container-main {
+  flex: 4;
+}
+.container-top .lyric {
+  min-height: 1rem;
+}
+.container-top .lyric.caption {
+  color: #666;
+  font-size: 1.1rem;
+}
+.container-top .container-art {
+  flex: 1;
+  min-width: 300px;
+}
+.container-top .container-art img {
+  width: 100%;
+  height: auto;
+}
+
+/*# sourceMappingURL=track.css.map */
