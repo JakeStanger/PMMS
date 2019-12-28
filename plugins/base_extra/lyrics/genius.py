@@ -8,6 +8,10 @@ def fetch_genius_lyrics(track: Track):
     genius = lyricsgenius.Genius(api_key)
 
     try:
-        return genius.search_song(track.name, track.artist.name).lyrics
+        song = genius.search_song(track.name, track.artist.name)
+        if song:
+            return song.lyrics
+        return None
+
     except ConnectionError:
         return None
