@@ -10,9 +10,13 @@ import database
 settings_set = settings.SettingsSet('plugins.base_extra.music.lyrics')
 
 
+def escape(name: str):
+    return name.replace('/', '')
+
+
 def load_cache(track: Track):
     cache_path = os.path.expanduser(settings_set.get_key('cache.path'))
-    full_path = os.path.join(cache_path, '%s - %s.txt' % (track.artist.name, track.name))
+    full_path = os.path.join(cache_path, '%s - %s.txt' % (escape(track.artist.name), escape(track.name)))
 
     if os.path.isfile(full_path):
         with open(full_path, 'r') as f:
@@ -21,7 +25,7 @@ def load_cache(track: Track):
 
 def write_cache(lyrics: str, track: Track):
     cache_path = os.path.expanduser(settings_set.get_key('cache.path'))
-    full_path = os.path.join(cache_path, '%s - %s.txt' % (track.artist.name, track.name))
+    full_path = os.path.join(cache_path, '%s - %s.txt' % (escape(track.artist.name), escape(track.name)))
 
     if not os.path.isdir(cache_path):
         os.makedirs(cache_path)
