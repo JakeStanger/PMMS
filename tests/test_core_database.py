@@ -1,7 +1,12 @@
+from flask import Flask
+
 import server
 import database
 import settings
 import plugin_loader
+
+app: Flask = Flask(__name__)
+server.app = app
 
 settings.__start__()
 server.__start__()

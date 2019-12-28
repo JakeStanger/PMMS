@@ -1,3 +1,5 @@
+from flask import Flask
+
 import server
 import database
 import settings
@@ -6,6 +8,9 @@ from plugins.base.movies.models import Movie
 
 
 def test_app_start():
+    app: Flask = Flask(__name__)
+    server.app = app
+
     server.__start__()
     settings.__start__()
     database.__start__()
